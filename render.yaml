@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ruangusaha-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt && bash scripts/install-java25.sh
+    startCommand: JAVA25=.render/java25/bin/java uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: FRONTEND_ORIGINS
+        sync: false

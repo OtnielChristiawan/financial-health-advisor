@@ -1,0 +1,2303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+   xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
+>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has State</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Business"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <owl:inverseOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#stateOf"/>
+    <rdfs:comment xml:lang="en">Business has a monthly state.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#GrossMarginDecline">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Gross Margin Decline</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Gross margin is below the lower bound derived from the business's own history (no universal threshold).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N497ac8cf9a094929abe765c92f21f6cd">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#LiquidityPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4491cff8227846b9ac5c1eefb7c9b1fc">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N4d8158115d4b4c849f40017431c5396f"/>
+    <rdf:rest rdf:nodeID="Nfb0061ff3718462696f446591950e26b"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#forPeriod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">for Period</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:comment xml:lang="en">Month that the state describes.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FixedOPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Fixed OPEX</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEX"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Revenue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Revenue"/>
+    <rdfs:label xml:lang="id">[DEMO] Revenue Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">100000000</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Diagnosis">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:label xml:lang="id">[DEMO] Diagnosis September 2026</rdfs:label>
+    <hasDiagnosisMessage>Omzet naik 11,1% tetapi untung bersih turun dari Rp17 juta ke Rp14 juta. Biaya bahan (COGS) naik 22,4%, lebih cepat dari omzet, sehingga margin kotor turun di bawah kebiasaan usaha ini; promosi juga naik 62,5%. Kenaikan harga bahan atau pergeseran produk yang terjual perlu dicek karena sistem belum membedakan keduanya. Kas turun Rp7 juta walau untung positif karena pembelian fasilitas Rp12 juta, prive Rp8 juta, dan cicilan pokok Rp2 juta.</hasDiagnosisMessage>
+    <hasConfidenceNote>Indikasi dari data yang dicatat; bukan nasihat keuangan resmi.</hasConfidenceNote>
+    <derivedFrom rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_NetProfit"/>
+    <hasExplanation rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Explanation"/>
+    <hasAdvisory rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Advisory"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentAsset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Current Asset</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Asset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#sourceNote">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label xml:lang="en">source Note</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Naa34d4d253964785932da1746bf6921f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nd7d81adf298245afb45a3c992615e9a1"/>
+    <rdf:rest rdf:nodeID="Neb5ac009189a4bdd8300f10290aa662f"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Category Name</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment xml:lang="en">Category label, e.g. COGS, Marketing, Listrik.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2702fa3e9f0a48429665e35f04e16da7">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOwnerDrawAmount"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_d"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9e073364d6a54f369bbff17490c796a8">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_SupplierPrice"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_OPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:label xml:lang="id">[DEMO] OPEX (non-marketing) Sep 2026</rdfs:label>
+    <hasCategoryName>OPEX (non-marketing)</hasCategoryName>
+    <hasCategoryAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">32000000</hasCategoryAmount>
+    <hasCategoryGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.066667</hasCategoryGrowth>
+    <hasProfitContribution rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2000000</hasProfitContribution>
+    <hasContributionRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasContributionRank>
+    <isTopContributor rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isTopContributor>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne2969864d7ae4da2981e6be17b5dadc5">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_LoanRepayment"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_g">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_State_2026_09">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:label xml:lang="id">[DEMO] Kondisi September 2026</rdfs:label>
+    <forPeriod rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Period_2026_09"/>
+    <comparedWith rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_State_2026_08"/>
+    <hasDataQuality rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Data_Complete"/>
+    <hasRevenueGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.111111</hasRevenueGrowth>
+    <hasCOGSGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.223684</hasCOGSGrowth>
+    <hasOPEXGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.066667</hasOPEXGrowth>
+    <hasMarketingGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.625</hasMarketingGrowth>
+    <hasGrossMargin rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.535</hasGrossMargin>
+    <hasGrossMarginLowerBound rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.56</hasGrossMarginLowerBound>
+    <hasNetProfit rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">14000000.0</hasNetProfit>
+    <hasNetMargin rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.14</hasNetMargin>
+    <hasNetMarginLowerBound rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.17</hasNetMarginLowerBound>
+    <hasOperatingCashFlow rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15000000.0</hasOperatingCashFlow>
+    <hasChangeInCash rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-7000000.0</hasChangeInCash>
+    <hasEndingCash rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">23000000</hasEndingCash>
+    <hasOwnerDrawAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">8000000</hasOwnerDrawAmount>
+    <hasPreviousOwnerDrawAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3000000</hasPreviousOwnerDrawAmount>
+    <hasCapexAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12000000</hasCapexAmount>
+    <hasLoanPrincipalPaid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2000000</hasLoanPrincipalPaid>
+    <hasCashRunwayMonths rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.875</hasCashRunwayMonths>
+    <hasRunwayMinimumMonths rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.0</hasRunwayMinimumMonths>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Revenue"/>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_COGS"/>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_OPEX"/>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Marketing"/>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Depreciation"/>
+    <hasIndicator rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_NetProfit"/>
+    <hasCategoryMovement rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_COGS"/>
+    <hasCategoryMovement rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_Marketing"/>
+    <hasCategoryMovement rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_OPEX"/>
+    <hasDiagnosis rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Diagnosis"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashRunway">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Berapa bulan kas bisa menutup biaya wajib</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb7f69e3fb3074522a0eaa5408d48af17">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd6c7d031cd2f47ce9619c9ea822d82e0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingGrowthExceedsRevenue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Marketing Growth Exceeds Revenue</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Marketing spend grew faster than revenue (md 20.4).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2291e7df283d4948b780b3fb54cd55a6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasGrossMargin"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_g"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#BalanceSheetAccount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Balance Sheet Account</rdfs:label>
+    <rdfs:comment xml:lang="en">Simple financial position (cash + fixed assets) is the MVP scope. Inventory, receivables and payables are future extensions.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2924d301cc2646c7b878cee350c4cb1b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N5a146e2e508d4c668cbd0a4405e2aad9"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N67405487cc1b4d15b4058bbdd91f9bf5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ncab2736fd738431ca635a3be17348b5b"/>
+    <rdf:rest rdf:nodeID="Nf73bdb4d988b46f3bf097b2c6bdca0f9"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd97f3f855b134e178e69db3cc611f598">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_OwnerDrawPolicy"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4132de7b530d442eb36a67bd5d7efa9c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nc63903d2bbe04d46b3991c55ae1c9e20"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb31db5c48650411fb310c23a04cc41d6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N539930e5006f4226ba09f5b72e914346"/>
+    <swrl:head rdf:nodeID="Nb7c2c22397c147469c7d28ca5d7ab48d"/>
+    <rdfs:label>F08_OwnerDrawLiquidityPressure</rdfs:label>
+    <rdfs:comment>Owner draw rose, cash fell, and operating cash flow was smaller than the draw.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.7; 'OCF not strong enough' interpreted as OCF &lt; owner draw; needs accountant validation</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasIndicator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Indicator</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:comment xml:lang="en">Amounts kept as evidence.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd3431d46bf024a8ea3301ce5d45ef4c5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N8b21885e6ff5474b82bb772f9de9e8e3"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetMarginLowerBound">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Net Margin Lower Bound</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Backend: own-history baseline minus tolerance.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfb0061ff3718462696f446591950e26b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N497ac8cf9a094929abe765c92f21f6cd"/>
+    <rdf:rest rdf:nodeID="Nad9c409e65a642b79cbc71d70916a8d7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">recommends Investigation</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:comment xml:lang="en">Inferred from class-level knowledge: each finding class carries a hasValue restriction to the areas worth checking.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasUsefulLifeMonths">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Useful Life Months</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CapexAmount"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OperatingProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Operating Profit</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasGrossMargin">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Gross Margin</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Gross margin this month (fraction).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Data_Complete">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DataQualityStatus"/>
+    <rdfs:label xml:lang="id">Complete</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N09e933573c614b0ba46f0e8336745248">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_d"/>
+    <rdf:rest rdf:nodeID="N14aecbc9aaa1422da2311c4e6bd726a2"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nad9c409e65a642b79cbc71d70916a8d7">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N9b4f0bfb84c648e9a4b9c195fcdcc48c"/>
+    <rdf:rest rdf:nodeID="N86fe22913f7d46478f01e9d715007b23"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#PositiveProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Positive Profit</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Net profit is greater than zero.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#VariableOPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Variable OPEX</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEX"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Period</rdfs:label>
+    <rdfs:comment xml:lang="en">A calendar month. Linked to the previous month with previousPeriod.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductionWaste">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Bahan terbuang / waste</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfc5a44a41c9543a3afc788bca8ae1143">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CostEscalation"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N900fe943e11747c99a0c8583b57e9e88">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N56f15dba4f23463fb2f3b20198a8ca48"/>
+    <swrl:head rdf:nodeID="N204abcb7d8824eff9a6c61b5dc51dff2"/>
+    <rdfs:label>F04_MarketingEfficiencyReview</rdfs:label>
+    <rdfs:comment>Marketing outgrows revenue; review efficiency.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.4</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N238d8119e087483ea59817c6124642ba">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nf2d5c734cb374a079c06f93795d791f7"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOPEXGrowth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has OPEXGrowth</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">OPEX growth, excluding marketing.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_LoanRepayment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Cicilan pokok pinjaman</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N86b0cc0e8e7f482e81563c0c5613b495">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_MaterialPrice"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7a67e18dec184d22a4976ee334497634">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N99b8bd8b102448b2a1ef382ba6299230"/>
+    <swrl:head rdf:nodeID="N4132de7b530d442eb36a67bd5d7efa9c"/>
+    <rdfs:label>O07_CashDecline</rdfs:label>
+    <rdfs:comment>Change in cash &lt; 0.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 27 (cash outflow &gt; inflow)</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasIncrementalProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Incremental Profit</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestmentMetric"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGSGrowthExceedsRevenue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">COGSGrowth Exceeds Revenue</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Total COGS grew faster than total revenue (md 20.1).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5f2a6e66cfbf4d61a03737e07fb3ca87">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#LiquidityPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N66d88f4f21a24b02a5893c4afb42e0f9">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#derivedFrom">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">derived From</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOwnerDrawAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Owner Draw Amount</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Owner draw (prive) this month (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CostEscalation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cost Escalation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N994fb7d0235f4c478307d3004ab15539"/>
+    <rdfs:subClassOf rdf:nodeID="N73cd5712f5594e64bf6b16bd96a7d66d"/>
+    <rdfs:subClassOf rdf:nodeID="Nfdbf38228d39466fbf0a3be4449e5833"/>
+    <rdfs:subClassOf rdf:nodeID="N5c821c3ed5804fed956ff14e1ffcb8f6"/>
+    <rdfs:comment xml:lang="en">COGS is growing faster than revenue (early signal). This version does not tell apart higher purchase prices from a shift in what is sold; both are listed as things to check.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Receivable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Receivable</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentAsset"/>
+    <rdfs:comment xml:lang="en">Future extension (not in MVP).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N912da0d837fa4fa4862f397791397de0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N30474a474c854b1ca9c9969904b9f8a1"/>
+    <swrl:head rdf:nodeID="N872ec53289bd49f6ad98e038e9c1d39a"/>
+    <rdfs:label>F02_MarginPressure</rdfs:label>
+    <rdfs:comment>Margin below baseline while COGS outgrows revenue.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.1; needs accountant validation</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd77a026894df4b3385182d54a6db0d2f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N4491cff8227846b9ac5c1eefb7c9b1fc"/>
+    <swrl:head rdf:nodeID="Nb01cb50738694bddac2607f3db18b9ff"/>
+    <rdfs:label>F09_LiquidityCritical</rdfs:label>
+    <rdfs:comment>Cash falling and runway below configured minimum.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>Draft; minimum is a policy parameter</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N01d06ea9d3684df1920408f30faf36c5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nfc5a44a41c9543a3afc788bca8ae1143"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ProfitPressure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Profit Pressure</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N0af256ddf99940af8e4cc26043d79400"/>
+    <rdfs:comment xml:lang="en">Net profit margin fell below its own baseline (e.g. same revenue, lower profit).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Period_2026_09">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:label xml:lang="id">[DEMO] September 2026</rdfs:label>
+    <previousPeriod rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Period_2026_08"/>
+    <hasPeriodStart rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-09-01</hasPeriodStart>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_p">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Marketing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingOPEX"/>
+    <rdfs:label xml:lang="id">[DEMO] Marketing Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">6500000.0</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1395ce584b0a4d1b9c183f240e148bf8">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRevenueGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N63e1d60749374175bb0e95eddd7b3ac5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Financial Condition</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:comment xml:lang="en">Observation classes: simple facts derived by comparing numbers. They are the intermediate steps shown in the reasoning path.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#previousPeriod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">previous Period</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:comment xml:lang="en">The month before this one.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfdbf38228d39466fbf0a3be4449e5833">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductionWaste"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasPreviousOwnerDrawAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Previous Owner Draw Amount</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Owner draw previous month (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1af1d18fe93a44ea9858ee6f4adefdb9">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_Marketing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:label xml:lang="id">[DEMO] Marketing Sep 2026</rdfs:label>
+    <hasCategoryName>Marketing</hasCategoryName>
+    <hasCategoryAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">6500000.0</hasCategoryAmount>
+    <hasCategoryGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.625</hasCategoryGrowth>
+    <hasProfitContribution rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-2500000.0</hasProfitContribution>
+    <hasContributionRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasContributionRank>
+    <isTopContributor rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isTopContributor>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasEvidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Evidence</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N204abcb7d8824eff9a6c61b5dc51dff2">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N3801fac62c644595bf8b8fa66706a765"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCOGSGrowth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has COGSGrowth</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Total COGS growth vs previous month.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N25475548953f4b819d60afcb3a372fd6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Nc0c5e37858b0483ea845848e6772762e"/>
+    <swrl:head rdf:nodeID="Ndf8c73dc7b744ba69f3b31de9fce4f5f"/>
+    <rdfs:label>O01_COGSGrowthExceedsRevenue</rdfs:label>
+    <rdfs:comment>Total COGS growth &gt; revenue growth.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.1, 20.6</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRevenueGrowth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Revenue Growth</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Total revenue growth vs previous month (0.10 = +10%).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#sourceStatus">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label xml:lang="en">source Status</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N73cd5712f5594e64bf6b16bd96a7d66d">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_MaterialPrice"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#NetProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Net Profit</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasReasoningText">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Reasoning Text</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na53d897cfb0c4b199f0c2578d75c3c52">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ne7315c7a64b645bcbfb5f4462eb2f1ed"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc72e4ce8069340a2a3004ea81f6f558f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Nf880050803834db5b93a6397ada9457d"/>
+    <swrl:head rdf:nodeID="Ne72c07743fe146f383c4c5ea9103eb8d"/>
+    <rdfs:label>O06_PositiveProfit</rdfs:label>
+    <rdfs:comment>Net profit &gt; 0.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>Accounting identity</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncfedf89ec66c41a3930bad391b1e2b49">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+    <swrl:arguments rdf:nodeID="N7787f58d4a9e48bfbcf2b83b70ad5981"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb71a4f5fb2f94a4583dbcc4ee55e4b7a">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+    <owl:members rdf:nodeID="N840091fbf4f34a8d82bff50813db2914"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3846c7efc0294629bd5137e3dfb6b306">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasChangeInCash"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_c"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryMovement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Category Movement</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncaded40541fd4c9b92620c2edf619130">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Ne8d0862e6a3348b68e70032c2e19aa20"/>
+    <swrl:head rdf:nodeID="N74254c4319814b979902f3c986c96f5c"/>
+    <rdfs:label>O02_OPEXGrowthExceedsRevenue</rdfs:label>
+    <rdfs:comment>OPEX growth &gt; revenue growth.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.3</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_SupplierPrice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Harga dari supplier</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb8fa023fcbc44bb58a1409a3f9d994cb">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ProfitPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_MaterialPrice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Harga bahan baku</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9b4f0bfb84c648e9a4b9c195fcdcc48c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCashRunwayMonths"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#LiquidityCritical">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Liquidity Critical</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CriticalCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N20676fbfd5b645d5aa08ea16f09b1145"/>
+    <rdfs:subClassOf rdf:nodeID="Ne9cfbd4a5ba04f2589f5772e5d5b6296"/>
+    <rdfs:comment xml:lang="en">Cash is falling and cash runway is below the minimum runway the owner/accountant configured (policy parameter, not a universal threshold).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N158e86b8da814246ac3eb0b9f2e41394">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_OwnerDrawPolicy"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nad4f8af16829454cbb6045e464e4a7e6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nb7f69e3fb3074522a0eaa5408d48af17"/>
+    <rdf:rest rdf:nodeID="N9ea201932a484cc8bcfdf25f664a3691"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9de338e17d6847f28b8a59b3684b25f7">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N58217b6cf124448b91f5e91e95e59776"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ProfitCashGap">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Profit Cash Gap</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N158e86b8da814246ac3eb0b9f2e41394"/>
+    <rdfs:subClassOf rdf:nodeID="N9d682ff0e78c4b3cbb4cefe33fd7324c"/>
+    <rdfs:subClassOf rdf:nodeID="Ne2969864d7ae4da2981e6be17b5dadc5"/>
+    <rdfs:subClassOf rdf:nodeID="N2f04704c0a0943dd86540d7143e1fc77"/>
+    <rdfs:comment xml:lang="en">Net profit is positive but the cash balance fell. Cash left through non-expense flows (owner draw, facility purchase, loan principal).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCashRunwayMonths">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Cash Runway Months</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Ending cash / essential monthly outflow.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb3f2261809224cfe8bcff8b036dc7509">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N74fa7bbe050e490385840a6b8e7a5f9b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ne867d3ded78c45f991e53770cf16c1aa"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N6b07a221f2f44ec38124526e2dd878b3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N1f03e60be9c54c1ba87823f92f0e5a5f"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N872ec53289bd49f6ad98e038e9c1d39a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N4080167731c5457983c3e29a86d01699"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncbb18fa71ae74a0e997508658026676f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRevenueGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashDecline">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cash Decline</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Cash balance decreased during the month (change in cash &lt; 0).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f880810edb34e6c866d523cc68de481">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ncb0fea1f29aa4b1bbb03053105c25612"/>
+    <rdf:rest rdf:nodeID="Na53d897cfb0c4b199f0c2578d75c3c52"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Move_COGS">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:label xml:lang="id">[DEMO] COGS Sep 2026</rdfs:label>
+    <hasCategoryName>COGS</hasCategoryName>
+    <hasCategoryAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">46500000.0</hasCategoryAmount>
+    <hasCategoryGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.223684</hasCategoryGrowth>
+    <hasProfitContribution rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">-8500000.0</hasProfitContribution>
+    <hasContributionRank rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasContributionRank>
+    <isTopContributor rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isTopContributor>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N41e8f500ab604b24859dfd8844ac7907">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEXGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasProfitContribution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Profit Contribution</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Effect on profit change (negative = reduces profit).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashFlow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cash Flow</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DepreciationExpense">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Depreciation Expense</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEXPressure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">OPEXPressure</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="Nd5ddf66ba7b44040bfdb00109ddb61b7"/>
+    <rdfs:comment xml:lang="en">Operating expenses grew faster than revenue.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasPeriodStart">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Period Start</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_OPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FixedOPEX"/>
+    <rdfs:label xml:lang="id">[DEMO] OPEX Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">32000000</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N34452205bdf54f4b9421321117b914bf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCostDriver"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Investigation Area</rdfs:label>
+    <rdfs:comment xml:lang="en">Something the owner should check. Linked from findings through recommendsInvestigation.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N92fac7c3f69c41ad8663f2453784d48c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+    <swrl:arguments rdf:nodeID="N72450f678f064c95b2cbabf2a76ac303"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N28b4cc88b7ae492f95a2b2cd6f9fca51">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N2291e7df283d4948b780b3fb54cd55a6"/>
+    <rdf:rest rdf:nodeID="N67405487cc1b4d15b4058bbdd91f9bf5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#PaybackAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Payback Amount</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestmentMetric"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasAccount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Account</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Business"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#BalanceSheetAccount"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ndf8c73dc7b744ba69f3b31de9fce4f5f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nc2ba6a590c444e2cb1e2052456c91704"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na71e606d56cd4194a915345f9e8571e5">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_c"/>
+    <rdf:rest rdf:nodeID="N305217d30f79490494c430fe2a5879e0"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#AccountsPayable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Accounts Payable</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentLiability"/>
+    <rdfs:comment xml:lang="en">Future extension (not in MVP).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasDepreciationPerMonth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Depreciation Per Month</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CapexAmount"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbbb4fb2e3f584ca9ae559911c8b12788">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Nac6ad8e7f4174169aff2fcc0b08de59c"/>
+    <swrl:head rdf:nodeID="Ndc17e337618b461e9c022003ec48452a"/>
+    <rdfs:label>O04_GrossMarginDecline</rdfs:label>
+    <rdfs:comment>Gross margin below own-history lower bound (baseline of the last ~3 months, computed by backend).</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 14, 20.1</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_State_2026_08">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:label xml:lang="id">[DEMO] Kondisi Agustus 2026</rdfs:label>
+    <forPeriod rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Period_2026_08"/>
+    <hasDataQuality rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Data_Complete"/>
+    <hasRevenueGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.05</hasRevenueGrowth>
+    <hasCOGSGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.04</hasCOGSGrowth>
+    <hasOPEXGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.02</hasOPEXGrowth>
+    <hasMarketingGrowth rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</hasMarketingGrowth>
+    <hasGrossMargin rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.577778</hasGrossMargin>
+    <hasGrossMarginLowerBound rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.56</hasGrossMarginLowerBound>
+    <hasNetProfit rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">17000000</hasNetProfit>
+    <hasNetMargin rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.188889</hasNetMargin>
+    <hasNetMarginLowerBound rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.17</hasNetMarginLowerBound>
+    <hasOperatingCashFlow rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">18000000</hasOperatingCashFlow>
+    <hasChangeInCash rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">13000000</hasChangeInCash>
+    <hasEndingCash rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">30000000</hasEndingCash>
+    <hasOwnerDrawAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3000000</hasOwnerDrawAmount>
+    <hasPreviousOwnerDrawAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3000000</hasPreviousOwnerDrawAmount>
+    <hasCapexAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</hasCapexAmount>
+    <hasLoanPrincipalPaid rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2000000</hasLoanPrincipalPaid>
+    <hasCashRunwayMonths rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.75</hasCashRunwayMonths>
+    <hasRunwayMinimumMonths rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.0</hasRunwayMinimumMonths>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetMargin">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Net Margin</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Net profit / revenue.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CostDriverMovement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cost Driver Movement</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:comment xml:lang="en">A cost category that grew faster than revenue and is among the top contributors to the profit change. Inferred by rule.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7aa3cf004cec4338aeb688118ba89bc3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Na42a65e6fea145239948e1c449ac5351"/>
+    <swrl:head rdf:nodeID="N308783ab90dc40f9b1109107f528e75f"/>
+    <rdfs:label>F05_ProfitPressure</rdfs:label>
+    <rdfs:comment>Net margin below baseline.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>User example; needs accountant validation</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N13ad1850eba14ebea1fd89a8166dd22c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Na6716e378ac747adbbc1fb3e9e738ed8"/>
+    <swrl:head rdf:nodeID="N93d8cc2525f4451ea1237dd1ad95f144"/>
+    <rdfs:label>F10_CostDriver</rdfs:label>
+    <rdfs:comment>A top-contributing cost category that outgrows revenue is a cost driver (profit bridge).</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>Draft; ranking computed by backend</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Neb5ac009189a4bdd8300f10290aa662f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nbabf6985756842ba8c814cc45acb7990"/>
+    <rdf:rest rdf:nodeID="N28a7918d9fed4ab8829a2c934c520d61"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCostDriver">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Cost Driver</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CostDriverMovement"/>
+    <rdfs:comment xml:lang="en">Inferred: categories that drive the profit decrease.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:versionInfo>2.1.0</owl:versionInfo>
+    <rdfs:label>Financial Health Expert System for F&amp;B MSMEs</rdfs:label>
+    <rdfs:comment>Knowledge base for diagnosing the financial health of small F&amp;B businesses. Numbers (growth, margins, baseline bounds, cash change) are computed by the backend and asserted on a MonthlyFinancialState individual; SWRL rules compare them and the reasoner classifies the state. v2: BusinessProfile removed (F&amp;B only), per-month state added, SWRL variables correctly typed swrl:Variable, numeric comparison moved into SWRL. v2.1: reseller/segment analysis removed for the MVP (rules use total figures and the business's own baseline).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N74254c4319814b979902f3c986c96f5c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N06162e7f8faa4d57837ba018b7780481"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Data_Partial">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DataQualityStatus"/>
+    <rdfs:label xml:lang="id">Partial</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRunwayMinimumMonths">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Runway Minimum Months</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Policy parameter set by the owner/accountant, not a universal constant.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasSource">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Source</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N340e014afe084a7a9736f8610557ded3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N840091fbf4f34a8d82bff50813db2914">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Asset"/>
+    <rdf:rest rdf:nodeID="N8ba5bf0c95054abd80b2476a6a533571"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FixedAsset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Fixed Asset</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Asset"/>
+    <rdfs:comment xml:lang="en">Facility/equipment purchased; depreciated monthly instead of expensed at once.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasDiagnosisMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Diagnosis Message</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingEfficiencyReview">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Marketing Efficiency Review</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="Na23b326223d14956ae773d8ae7a56e88"/>
+    <rdfs:comment xml:lang="en">Marketing spend grew faster than revenue; its efficiency should be reviewed (not a conclusion that it is wasteful).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd0cca461a08547e683fe44d072a177bf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N3f6fe75c82934398b0f81ed997d0c298"/>
+    <rdf:rest rdf:nodeID="N75952b886e7941d0afe847b5da060071"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N799de3993ea142058b7e836ce2b3dfab">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetMarginLowerBound"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_lb"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_WarkopKusuma">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Business"/>
+    <rdfs:label xml:lang="id">[DEMO] Warkop Kusuma</rdfs:label>
+    <hasState rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_State_2026_08"/>
+    <hasState rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_State_2026_09"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1b705348043a4ea9864fbd99e8af282b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N7351a01f824c4ccfbe6979565d5b888b"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarginPressure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Margin Pressure</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N9e073364d6a54f369bbff17490c796a8"/>
+    <rdfs:subClassOf rdf:nodeID="N86b0cc0e8e7f482e81563c0c5613b495"/>
+    <rdfs:subClassOf rdf:nodeID="N4cf917eec2334c049955582ffe1288cb"/>
+    <rdfs:subClassOf rdf:nodeID="Nabeb02b0e60d4171b67dbfce11199375"/>
+    <rdfs:comment xml:lang="en">Gross margin fell below the business's own baseline while COGS grew faster than revenue.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasContributionRank">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Contribution Rank</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasGrossMarginLowerBound">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Gross Margin Lower Bound</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Backend: own-history baseline minus tolerance. Omit when history is insufficient; the rule then stays silent.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc2ba6a590c444e2cb1e2052456c91704">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGSGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5a146e2e508d4c668cbd0a4405e2aad9">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ProfitCashGap"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nac6ad8e7f4174169aff2fcc0b08de59c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N71862b4d211f47f28e4110317d4f61d6"/>
+    <rdf:rest rdf:nodeID="N28b4cc88b7ae492f95a2b2cd6f9fca51"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncc6a363ccfc74decbe86bbd8464a97f4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na9d314dd451942e68256743be17737d8">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N3846c7efc0294629bd5137e3dfb6b306"/>
+    <rdf:rest rdf:nodeID="Nfb1c718e5b604056b14ec3cf42161382"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7ea5787925f740ac9a5b3d1fd23a0a60">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Na6b5e66862184589be777a36a0a559bf"/>
+    <swrl:head rdf:nodeID="N47d1a89690aa406d8f977b2463c09651"/>
+    <rdfs:label>O03_MarketingGrowthExceedsRevenue</rdfs:label>
+    <rdfs:comment>Marketing growth &gt; revenue growth.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.4</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na42a65e6fea145239948e1c449ac5351">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N4e39949362ef49eeb26d25e2c0470982"/>
+    <rdf:rest rdf:nodeID="Nd3431d46bf024a8ea3301ce5d45ef4c5"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N494cd10f17134a5895b1d9dfe450dac5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+    <swrl:arguments rdf:nodeID="N6c1a1092341e4e1a91d3d9e5f190fff7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasChangeInCash">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Change In Cash</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Ending cash minus opening cash (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8cbc7ebd18864e2192c30f6028fc8d64">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N2683da526b9249c5b22e81414cfe141a"/>
+    <swrl:head rdf:nodeID="Nc38da8572731462493910d4132f38d60"/>
+    <rdfs:label>F03_OPEXPressure</rdfs:label>
+    <rdfs:comment>OPEX outgrows revenue.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.3</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningEvidence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Reasoning Evidence</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashAndBank">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cash And Bank</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentAsset"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc910765e7596457682567b3be7a2a3a2">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N25927b4a486f46b7aeaad3ae1bdf29eb"/>
+    <rdf:rest rdf:nodeID="N9de338e17d6847f28b8a59b3684b25f7"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na23b326223d14956ae773d8ae7a56e88">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_MarketingEfficiency"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasLoanPrincipalPaid">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Loan Principal Paid</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Loan principal repaid this month (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na726ee54912e4aa2b6884907f44a0ba4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Nad4f8af16829454cbb6045e464e4a7e6"/>
+    <swrl:head rdf:nodeID="N2924d301cc2646c7b878cee350c4cb1b"/>
+    <rdfs:label>F06_ProfitCashGap</rdfs:label>
+    <rdfs:comment>Profit positive but cash fell (replaces v1 CashFlowDivergence, which cannot fire under cash-basis recording).</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>Cash-basis identity: OCF = net profit + depreciation</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_FacilityPurchase">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Pembelian fasilitas/peralatan</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_pd">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbce239a552bf408eb7a871d7cfcbdfe4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf2d5c734cb374a079c06f93795d791f7">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb01cb50738694bddac2607f3db18b9ff">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N4bc4d02c86d240798eb7c8fa3e19853b"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">OPEX</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:comment xml:lang="en">Operating expenses.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningPath">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Reasoning Path</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasAdvisory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Advisory</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Advisory"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Data_Missing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DataQualityStatus"/>
+    <rdfs:label xml:lang="id">Missing</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#NetMarginDecline">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Net Margin Decline</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">Net profit margin is below the lower bound derived from the business's own history.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_NetProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#NetProfit"/>
+    <rdfs:label xml:lang="id">[DEMO] NetProfit Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">14000000.0</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Reasoning Step</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasPaybackMonths">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Payback Months</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#PaybackAmount"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Depreciation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DepreciationExpense"/>
+    <rdfs:label xml:lang="id">[DEMO] Depreciation Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1000000</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4d8158115d4b4c849f40017431c5396f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Liability">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Liability</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#BalanceSheetAccount"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N72450f678f064c95b2cbabf2a76ac303">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_n"/>
+    <rdf:rest rdf:nodeID="N84cb920a7fc34be9843a769ec9ffe1d8"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N58217b6cf124448b91f5e91e95e59776">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#isTopContributor"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+    <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ROIPercentage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">ROIPercentage</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestmentMetric"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasPeriodLabel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Period Label</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3f6fe75c82934398b0f81ed997d0c298">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasMarketingGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestorCapital">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Investor Capital</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na7de8a8d1f274fcba65ddeeac854197e">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#NetMarginDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N28a7918d9fed4ab8829a2c934c520d61">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N799de3993ea142058b7e836ce2b3dfab"/>
+    <rdf:rest rdf:nodeID="N4a6410cf812f4bac96f7833275fda3e0"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OwnerCapital">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Owner Capital</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#GrossMargin">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Gross Margin</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#HealthyCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Healthy Condition</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialStatus"/>
+    <rdfs:comment xml:lang="en">Backend default when no warning/critical finding was inferred.</rdfs:comment>
+    <owl:disjointWith rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <owl:disjointWith rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CriticalCondition"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasReasoningStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Reasoning Step</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningPath"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningStep"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N525504bb19e9400fa10015ea21c5a583">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#GrossMarginDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc1af507da0e34ab59206c247066ba9d9">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+    <rdf:rest rdf:nodeID="N552a85f72ef240ce9fb8464641214f62"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#GrossProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Gross Profit</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_COGS">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGS"/>
+    <rdfs:label xml:lang="id">[DEMO] COGS Sep 2026</rdfs:label>
+    <hasAmount rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">46500000.0</hasAmount>
+    <hasPeriodLabel>2026-09</hasPeriodLabel>
+    <hasSource>demo data</hasSource>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N302a641c2a444164bddb7cda3f2bf99a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasPreviousOwnerDrawAmount"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_pd"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetProfit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Net Profit</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Net profit (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N333c68db03e541d0b1a2b7a83f85a63a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="N3ddcdf9e6f7443639c88ac0c1fd45bdf"/>
+    <swrl:head rdf:nodeID="N40d7683b77f24e6ca48df11204d265e0"/>
+    <rdfs:label>F07_LiquidityPressure</rdfs:label>
+    <rdfs:comment>Cash fell during the month.</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 27</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestmentMetric">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Investment Metric</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#LiquidityPressure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Liquidity Pressure</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="N3dd710365c7541018886d7d842b62601"/>
+    <rdfs:comment xml:lang="en">Cash balance fell during the month.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N874a98f47837431689f7025a8c762ce6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N2735d1e5cb0a429cacc06b341653a945"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Advisory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Advisory</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf3b25cf28178472db6277101570be7d4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Nc4474c0c9f954ed48f82497655e5e9e0"/>
+    <swrl:head rdf:nodeID="N01d06ea9d3684df1920408f30faf36c5"/>
+    <rdfs:label>F01_CostEscalation</rdfs:label>
+    <rdfs:comment>COGS growing faster than revenue indicates cost escalation (early signal).</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>md 20.6; needs accountant validation</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4080167731c5457983c3e29a86d01699">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarginPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N53081142b4844606a4e17c716550a8dc">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N1395ce584b0a4d1b9c183f240e148bf8"/>
+    <rdf:rest rdf:nodeID="N874a98f47837431689f7025a8c762ce6"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f47cc0cd297420db25b8cd0f767a3fd">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Na7de8a8d1f274fcba65ddeeac854197e"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc63903d2bbe04d46b3991c55ae1c9e20">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasROIPercentage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has ROIPercentage</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ROIPercentage"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#AccumulatedDepreciation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Accumulated Depreciation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Asset"/>
+    <rdfs:comment xml:lang="en">Contra-asset.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne7315c7a64b645bcbfb5f4462eb2f1ed">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+    <swrl:arguments rdf:nodeID="Nd0685acba8e6452d986f9b5f1b3ab969"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne9cfbd4a5ba04f2589f5772e5d5b6296">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashPosition"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#comparedWith">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">compared With</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:comment xml:lang="en">The previous month's state used as comparison.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9ba180999d014156bbd080a0aa6d0e18">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#GrossMarginDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OwnerDrawLiquidityPressure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Owner Draw Liquidity Pressure</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition"/>
+    <rdfs:subClassOf rdf:nodeID="Nd97f3f855b134e178e69db3cc611f598"/>
+    <rdfs:subClassOf rdf:nodeID="N0999a80d897f4a0d88af4533d13e480e"/>
+    <rdfs:comment xml:lang="en">Owner draw increased, cash fell, and operating cash flow did not cover the draw.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb0cab875c46c481f892703dc0c50ffc6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N1af1d18fe93a44ea9858ee6f4adefdb9"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasResidualValue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Residual Value</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CapexAmount"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4cf917eec2334c049955582ffe1288cb">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductionWaste"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingOPEX">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Marketing OPEX</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEX"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0af256ddf99940af8e4cc26043d79400">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CostBreakdown"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd7d81adf298245afb45a3c992615e9a1">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasMarketingGrowth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Marketing Growth</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Marketing growth.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nace6451981af4bf786a995abc717df31">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N41e8f500ab604b24859dfd8844ac7907"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f04704c0a0943dd86540d7143e1fc77">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashPosition"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Advisory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Advisory"/>
+    <hasAdvisoryText>Periksa harga bahan dari supplier, bahan terbuang, dan komposisi penjualan; tinjau hasil promosi; periksa pengambilan prive, pembelian fasilitas, dan cicilan.</hasAdvisoryText>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9d6f15375c9d4c71a88c5b8396c2c863">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_g"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne384279d2f764dac9c7d48a38c2fc8db">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRevenueGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductMix">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Komposisi penjualan: apakah porsi produk bermargin rendah naik</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEXGrowthExceedsRevenue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">OPEXGrowth Exceeds Revenue</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialCondition"/>
+    <rdfs:comment xml:lang="en">OPEX (excluding marketing) grew faster than revenue (md 20.3).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0cb1602362d842a0a40f265d22694b54">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ncfedf89ec66c41a3930bad391b1e2b49"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasEndingCash">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Ending Cash</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Ending cash balance (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na1b513ddcda64e50a638989218b51ca6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCOGSGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_c"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N263da5b27e554b5889e2340cc7a95183">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRunwayMinimumMonths"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3801fac62c644595bf8b8fa66706a765">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingEfficiencyReview"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#isTopContributor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">is Top Contributor</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:comment xml:lang="en">Backend flag: among the largest contributors to the profit change.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc4474c0c9f954ed48f82497655e5e9e0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ne5e8a20a746044579f2b3d228eaabbbf"/>
+    <rdf:rest rdf:nodeID="N6b07a221f2f44ec38124526e2dd878b3"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Naf2714ebb7844778b5ffb817f14cafe3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasConfidenceNote">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Confidence Note</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasDataQuality">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Data Quality</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DataQualityStatus"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5358ac0c21e1493db229bcfe39020fb6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N14aecbc9aaa1422da2311c4e6bd726a2">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_pd"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd8f50f1a7e894b49b01a7b8017e11d0c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N9d6f15375c9d4c71a88c5b8396c2c863"/>
+    <rdf:rest rdf:nodeID="N43573b11896446c1bf7b269eadca54f4"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1e8fe763191946169e829dcf134c7aea">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+    <swrl:body rdf:nodeID="Naa34d4d253964785932da1746bf6921f"/>
+    <swrl:head rdf:nodeID="N2f47cc0cd297420db25b8cd0f767a3fd"/>
+    <rdfs:label>O05_NetMarginDecline</rdfs:label>
+    <rdfs:comment>Net margin below own-history lower bound (covers 'same revenue, lower profit').</rdfs:comment>
+    <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+    <sourceStatus>Draft-unvalidated</sourceStatus>
+    <sourceNote>User example: revenue flat, profit 30jt -&gt; 15jt</sourceNote>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashPosition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Posisi dan arus kas</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancingCashFlow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Financing Cash Flow</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashFlow"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf880050803834db5b93a6397ada9457d">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N41ab392eb56047ab87f201e2cc8e0386"/>
+    <rdf:rest rdf:nodeID="N7c27684f24684e13b811e06e6016ef5b"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N71862b4d211f47f28e4110317d4f61d6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd0685acba8e6452d986f9b5f1b3ab969">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_ocf"/>
+    <rdf:rest rdf:nodeID="Nf11418b6da8f469e84734a2d1ad9b889"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8da448a686254c9c913fd3aa1b01e2cb">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+    <swrl:arguments rdf:nodeID="Nb89fbcdc792645108bf0c8108e071ce6"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N46e6ee6eb41142e29446331653198b42">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ncbb18fa71ae74a0e997508658026676f"/>
+    <rdf:rest rdf:nodeID="N49ffbabfeaa9465e8d543352b4c34388"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Monthly Financial State</rdfs:label>
+    <rdfs:comment xml:lang="en">Snapshot of one business in one month. The backend asserts computed numbers on it; the reasoner classifies it into observation and finding classes.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CapexAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Capex Amount</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestmentMetric"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialStatus">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Financial Status</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:comment xml:lang="en">Findings. Banner rule used by the application: Critical if the state is in CriticalCondition, else Warning if in WarningCondition, else Healthy (Healthy is a backend default; OWL is open-world, so it is never inferred).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Sep_Explanation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Explanation"/>
+    <rdfs:comment>Reasoning path: GrossMarginDecline + COGSGrowthExceedsRevenue -&gt; MarginPressure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N882382f2ec1b410fb8bd3948f96c4127">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N51b82dd862934d9bb363ffd6a6a5d0b8"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N552a85f72ef240ce9fb8464641214f62">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOperatingCashFlow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Operating Cash Flow</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Cash-basis operating cash flow = net profit + depreciation (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCapexAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Capex Amount</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:comment xml:lang="en">Cash spent on facilities this month (Rupiah).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N06162e7f8faa4d57837ba018b7780481">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEXGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N40d7683b77f24e6ca48df11204d265e0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N5f2a6e66cfbf4d61a03737e07fb3ca87"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGS">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">COGS</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:comment xml:lang="en">Cost of goods sold (raw materials, or goods bought for resale). Product groups/segments are a future extension.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Amount</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb89fbcdc792645108bf0c8108e071ce6">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_c"/>
+    <rdf:rest rdf:nodeID="N2f0b7af132ca402aa445f5dfe71d98da"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N93a54dd292a64e899191a1bfb633f14d">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4a6410cf812f4bac96f7833275fda3e0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N92fac7c3f69c41ad8663f2453784d48c"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CriticalCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Critical Condition</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialStatus"/>
+    <rdfs:comment xml:lang="en">At least one critical finding was inferred. Not disjoint from WarningCondition: a state can have both; the highest severity wins.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3ddcdf9e6f7443639c88ac0c1fd45bdf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N63e1d60749374175bb0e95eddd7b3ac5"/>
+    <rdf:rest rdf:nodeID="N238d8119e087483ea59817c6124642ba"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N75952b886e7941d0afe847b5da060071">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N481d9b2f57124a6a8d585e9131a7227c"/>
+    <rdf:rest rdf:nodeID="N1b705348043a4ea9864fbd99e8af282b"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8b13b39df991461eb5b91934e0bee4e3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetProfit"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_p"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nacefc7564a0a4a769f757060283aa8d5">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MarketingGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N539930e5006f4226ba09f5b72e914346">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Naf2714ebb7844778b5ffb817f14cafe3"/>
+    <rdf:rest rdf:nodeID="N8ab16bf7cdd147b4800ff2822228898e"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ndaf56952c1f9487c8d2a84773f9edd1a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N3139f53771464e418f371ccf5d834e11"/>
+    <rdf:rest rdf:nodeID="N53081142b4844606a4e17c716550a8dc"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N25927b4a486f46b7aeaad3ae1bdf29eb">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="N3e549476b8e648bd8c3b8293eda78808"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OwnerDraw">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Owner Draw</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity"/>
+    <rdfs:comment xml:lang="en">Prive. Not an expense; reduces equity and cash.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryGrowth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Category Growth</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N56f15dba4f23463fb2f3b20198a8ca48">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N8e785bff95f44fcfa70bac35e9a817e4"/>
+    <rdf:rest rdf:nodeID="Nb0cab875c46c481f892703dc0c50ffc6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_OwnerDrawPolicy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Besar dan pola pengambilan kas pribadi (prive)</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na33849b887474204a9ebc2cedfe921fa">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_o"/>
+    <rdf:rest rdf:nodeID="N4cb52b41768f4cb0bfa1e55ba835c35f"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0dfa896c845a45e0af4d94f42bc0cc3d">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#PositiveProfit"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N41ab392eb56047ab87f201e2cc8e0386">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3e549476b8e648bd8c3b8293eda78808">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_g"/>
+    <rdf:rest rdf:nodeID="N93a54dd292a64e899191a1bfb633f14d"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbb52a953db2c4ce6bab9a9586f97b277">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_OperatingExpenseDetail">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Rincian biaya operasional</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N305217d30f79490494c430fe2a5879e0">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N994fb7d0235f4c478307d3004ab15539">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_SupplierPrice"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3dd710365c7541018886d7d842b62601">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashPosition"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf60b39a281cf4e7f8a9e7db81a3c6bdd">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N699889e539744754a5501460f1096a77">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="N09e933573c614b0ba46f0e8336745248"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2683da526b9249c5b22e81414cfe141a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nd6c7d031cd2f47ce9619c9ea822d82e0"/>
+    <rdf:rest rdf:nodeID="Nace6451981af4bf786a995abc717df31"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfee768da04c049d4ab5ddb50dc18e765">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N66d88f4f21a24b02a5893c4afb42e0f9"/>
+    <rdf:rest rdf:nodeID="N2f880810edb34e6c866d523cc68de481"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Equity</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#BalanceSheetAccount"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryAmount">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Category Amount</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na0cbad3beb2a4f6eaa9eccbb661492ff">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N699889e539744754a5501460f1096a77"/>
+    <rdf:rest rdf:nodeID="Nfee768da04c049d4ab5ddb50dc18e765"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#stateOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">state Of</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Business"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N30474a474c854b1ca9c9969904b9f8a1">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N5358ac0c21e1493db229bcfe39020fb6"/>
+    <rdf:rest rdf:nodeID="Nf6d22c6180be4e37ac17c652ebdac281"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfb1c718e5b604056b14ec3cf42161382">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N8da448a686254c9c913fd3aa1b01e2cb"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nde6ef33288cf4e80b2f2c2291d8f2bc2">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N34452205bdf54f4b9421321117b914bf"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#WarningCondition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Warning Condition</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialStatus"/>
+    <rdfs:comment xml:lang="en">At least one warning finding was inferred.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N20676fbfd5b645d5aa08ea16f09b1145">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashRunway"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf14cacc887c64377bbc6d3c2fb0e1c96">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#PositiveProfit"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CostBreakdown">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Rincian kenaikan biaya per kategori (profit bridge)</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1f03e60be9c54c1ba87823f92f0e5a5f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGSGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9d682ff0e78c4b3cbb4cefe33fd7324c">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_FacilityPurchase"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne2f8657a24ad4303a0c7558dc124a27c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasCategoryMovement"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf11418b6da8f469e84734a2d1ad9b889">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_d"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Financial Diagnosis</rdfs:label>
+    <rdfs:comment xml:lang="en">Diagnosis record composed by the backend from the classes the reasoner inferred.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasAdvisoryText">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">has Advisory Text</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Advisory"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8e785bff95f44fcfa70bac35e9a817e4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3139f53771464e418f371ccf5d834e11">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOPEXGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_o"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Financial Indicator</rdfs:label>
+    <rdfs:comment xml:lang="en">An amount (Rupiah) for one month, kept for evidence and display.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne72c07743fe146f383c4c5ea9103eb8d">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N0dfa896c845a45e0af4d94f42bc0cc3d"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Revenue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Revenue</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialIndicator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CategoryMovement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Category Movement</rdfs:label>
+    <rdfs:comment xml:lang="en">Month-over-month movement of one cost category (COGS, OPEX, Marketing, Depreciation). One individual per category per month; computed by the backend (profit bridge).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N99b8bd8b102448b2a1ef382ba6299230">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nfa58ba71ae7647a69cb750c956a4950b"/>
+    <rdf:rest rdf:nodeID="Na9d314dd451942e68256743be17737d8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_MarketingEfficiency">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestigationArea"/>
+    <rdfs:label xml:lang="id">Hasil promosi/iklan terhadap penjualan</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf73bdb4d988b46f3bf097b2c6bdca0f9">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N494cd10f17134a5895b1d9dfe450dac5"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N308783ab90dc40f9b1109107f528e75f">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nb8fa023fcbc44bb58a1409a3f9d994cb"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N43573b11896446c1bf7b269eadca54f4">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ne384279d2f764dac9c7d48a38c2fc8db"/>
+    <rdf:rest rdf:nodeID="Nc910765e7596457682567b3be7a2a3a2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Business">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Business</rdfs:label>
+    <rdfs:comment xml:lang="en">A small business (v2: F&amp;B only). Its monthly condition is described by MonthlyFinancialState individuals.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N481d9b2f57124a6a8d585e9131a7227c">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasRevenueGrowth"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncab2736fd738431ca635a3be17348b5b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasGrossMarginLowerBound"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_lb"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7c27684f24684e13b811e06e6016ef5b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N8b13b39df991461eb5b91934e0bee4e3"/>
+    <rdf:rest rdf:nodeID="N29cd466e8bb74a658e652594c082f2ba"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Demo_Period_2026_08">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Period"/>
+    <rdfs:label xml:lang="id">[DEMO] Agustus 2026</rdfs:label>
+    <hasPeriodStart rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2026-08-01</hasPeriodStart>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nabeb02b0e60d4171b67dbfce11199375">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductMix"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na6716e378ac747adbbc1fb3e9e738ed8">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ncc6a363ccfc74decbe86bbd8464a97f4"/>
+    <rdf:rest rdf:nodeID="N6eb43df937544b148a86c03d6fc4a154"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2f0b7af132ca402aa445f5dfe71d98da">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</rdf:first>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ndc17e337618b461e9c022003ec48452a">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N525504bb19e9400fa10015ea21c5a583"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N6c1a1092341e4e1a91d3d9e5f190fff7">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_g"/>
+    <rdf:rest rdf:nodeID="Nf1f0dc59ada84abaa75dcb33545cb80d"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N6eb43df937544b148a86c03d6fc4a154">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Ne2f8657a24ad4303a0c7558dc124a27c"/>
+    <rdf:rest rdf:nodeID="Nd8f50f1a7e894b49b01a7b8017e11d0c"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N49ffbabfeaa9465e8d543352b4c34388">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nc225bf13b6fe4121b30af4346084824e"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc38da8572731462493910d4132f38d60">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N5b84abb6a54f4d73ae158db8742d3426"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne867d3ded78c45f991e53770cf16c1aa">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#COGSGrowthExceedsRevenue"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Inventory">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Inventory</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentAsset"/>
+    <rdfs:comment xml:lang="en">Future extension (not in MVP).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OperatingCashFlow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Operating Cash Flow</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashFlow"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasDiagnosis">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Diagnosis</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Na6b5e66862184589be777a36a0a559bf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nf60b39a281cf4e7f8a9e7db81a3c6bdd"/>
+    <rdf:rest rdf:nodeID="Nd0cca461a08547e683fe44d072a177bf"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne5e8a20a746044579f2b3d228eaabbbf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8b21885e6ff5474b82bb772f9de9e8e3">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#NetMarginDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Explanation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Explanation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#ReasoningEvidence"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb7c2c22397c147469c7d28ca5d7ab48d">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N085a862508e64b06a035f1890fb50e1e"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N86fe22913f7d46478f01e9d715007b23">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N263da5b27e554b5889e2340cc7a95183"/>
+    <rdf:rest rdf:nodeID="N0cb1602362d842a0a40f265d22694b54"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0999a80d897f4a0d88af4533d13e480e">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_CashPosition"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8ba5bf0c95054abd80b2476a6a533571">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Liability"/>
+    <rdf:rest rdf:nodeID="Nbb52a953db2c4ce6bab9a9586f97b277"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N240aa8afe5db4b98914946432a629116">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N302a641c2a444164bddb7cda3f2bf99a"/>
+    <rdf:rest rdf:nodeID="Na0cbad3beb2a4f6eaa9eccbb661492ff"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N51b82dd862934d9bb363ffd6a6a5d0b8">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashDecline"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nbabf6985756842ba8c814cc45acb7990">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasNetMargin"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_n"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4e39949362ef49eeb26d25e2c0470982">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N29cd466e8bb74a658e652594c082f2ba">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N4199c634380240e8b1e275474fa3ac39"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasExplanation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">has Explanation</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#FinancialDiagnosis"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Explanation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4d662fb30481499e94aeed2e23f576b6">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Na1b513ddcda64e50a638989218b51ca6"/>
+    <rdf:rest rdf:nodeID="N46e6ee6eb41142e29446331653198b42"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N085a862508e64b06a035f1890fb50e1e">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OwnerDrawLiquidityPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc225bf13b6fe4121b30af4346084824e">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="Na71e606d56cd4194a915345f9e8571e5"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N9ea201932a484cc8bcfdf25f664a3691">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nf14cacc887c64377bbc6d3c2fb0e1c96"/>
+    <rdf:rest rdf:nodeID="N882382f2ec1b410fb8bd3948f96c4127"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4bc4d02c86d240798eb7c8fa3e19853b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#LiquidityCritical"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#InvestingCashFlow">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Investing Cash Flow</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CashFlow"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N8ab16bf7cdd147b4800ff2822228898e">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N2702fa3e9f0a48429665e35f04e16da7"/>
+    <rdf:rest rdf:nodeID="N240aa8afe5db4b98914946432a629116"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne8d0862e6a3348b68e70032c2e19aa20">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nbce239a552bf408eb7a871d7cfcbdfe4"/>
+    <rdf:rest rdf:nodeID="Ndaf56952c1f9487c8d2a84773f9edd1a"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4cb52b41768f4cb0bfa1e55ba835c35f">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Asset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Asset</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#BalanceSheetAccount"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nfa58ba71ae7647a69cb750c956a4950b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#MonthlyFinancialState"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#DataQualityStatus">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Data Quality Status</rdfs:label>
+    <rdfs:comment xml:lang="en">Completeness of the data behind a state.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5b84abb6a54f4d73ae158db8742d3426">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#OPEXPressure"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N47d1a89690aa406d8f977b2463c09651">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nacefc7564a0a4a769f757060283aa8d5"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5c821c3ed5804fed956ff14e1ffcb8f6">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_ProductMix"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nc0c5e37858b0483ea845848e6772762e">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N340e014afe084a7a9736f8610557ded3"/>
+    <rdf:rest rdf:nodeID="N4d662fb30481499e94aeed2e23f576b6"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4199c634380240e8b1e275474fa3ac39">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="N380bd10417d848cd93fc050bb6600147"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf1f0dc59ada84abaa75dcb33545cb80d">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_lb"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CurrentLiability">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Current Liability</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Liability"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N84cb920a7fc34be9843a769ec9ffe1d8">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_lb"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N93d8cc2525f4451ea1237dd1ad95f144">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="Nd1e0cd1dabf742c78f27cc149dcfeda0"/>
+    <rdf:rest rdf:nodeID="Nde6ef33288cf4e80b2f2c2291d8f2bc2"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ncb0fea1f29aa4b1bbb03053105c25612">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+    <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#hasOperatingCashFlow"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_s"/>
+    <swrl:argument2 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_ocf"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7787f58d4a9e48bfbcf2b83b70ad5981">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r"/>
+    <rdf:rest rdf:nodeID="Nb3f2261809224cfe8bcff8b036dc7509"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_lb">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N380bd10417d848cd93fc050bb6600147">
+    <rdf:first rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_p"/>
+    <rdf:rest rdf:nodeID="N0d36673fc2ad40bf9a3a65df1a39f704"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd5ddf66ba7b44040bfdb00109ddb61b7">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#recommendsInvestigation"/>
+    <owl:hasValue rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Area_OperatingExpenseDetail"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N2735d1e5cb0a429cacc06b341653a945">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="Na33849b887474204a9ebc2cedfe921fa"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#RetainedEarnings">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Retained Earnings</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Equity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_o">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_n">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Loan">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Loan</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#Liability"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_ocf">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N0d36673fc2ad40bf9a3a65df1a39f704">
+    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</rdf:first>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_r">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7351a01f824c4ccfbe6979565d5b888b">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+    <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+    <swrl:arguments rdf:nodeID="Nc1af507da0e34ab59206c247066ba9d9"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf6d22c6180be4e37ac17c652ebdac281">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+    <rdf:first rdf:nodeID="N9ba180999d014156bbd080a0aa6d0e18"/>
+    <rdf:rest rdf:nodeID="N74fa7bbe050e490385840a6b8e7a5f9b"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nd1e0cd1dabf742c78f27cc149dcfeda0">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+    <swrl:classPredicate rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#CostDriverMovement"/>
+    <swrl:argument1 rdf:resource="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_m"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.semanticweb.org/otniel/ontologies/2026/9/financial-health-expert-system#var_d">
+    <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+  </rdf:Description>
+</rdf:RDF>
