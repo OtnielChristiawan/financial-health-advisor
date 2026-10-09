@@ -83,6 +83,44 @@ class FinancialReportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Nilai residu aset"):
             build_financial_report(FinanceWorkspace.model_validate(workspace), "2026-09")
 
+    def test_transfer_moves_balance_between_cash_and_bank_without_changing_total_cash_flow(self) -> None:
+        workspace = workspace_fixture()
+        baseline = build_financial_report(FinanceWorkspace.model_validate(workspace), "2026-09")["report"]
+        workspace["transactions"].append({
+            "id": "sep-transfer",
+            "date": "2026-09-20",
+            "description": "Setor tunai ke rekening",
+            "kind": "transfer",
+            "category": "Perpindahan saldo",
+            "amount": 2_000_000,
+            "account": "cash",
+            "transferTo": "bank",
+        })
+
+        report = build_financial_report(FinanceWorkspace.model_validate(workspace), "2026-09")["report"]
+
+        self.assertEqual(report["cash"], baseline["cash"] - 2_000_000)
+        self.assertEqual(report["bank"], baseline["bank"] + 2_000_000)
+        self.assertEqual(report["cashClosing"], baseline["cashClosing"])
+        self.assertEqual(report["changeCash"], baseline["changeCash"])
+        self.assertEqual(report["balanceDifference"], baseline["balanceDifference"])
+
+    def test_transfer_requires_a_different_destination_account(self) -> None:
+        workspace = workspace_fixture()
+        workspace["transactions"].append({
+            "id": "invalid-transfer",
+            "date": "2026-09-20",
+            "description": "Transfer tidak valid",
+            "kind": "transfer",
+            "category": "Perpindahan saldo",
+            "amount": 2_000_000,
+            "account": "cash",
+            "transferTo": "cash",
+        })
+
+        with self.assertRaises(ValidationError):
+            FinanceWorkspace.model_validate(workspace)
+
 
 if __name__ == "__main__":
     unittest.main()

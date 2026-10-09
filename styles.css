@@ -131,12 +131,44 @@ h1 { margin: 6px 0 5px; font: 800 25px Manrope,sans-serif; letter-spacing: -.8px
 .health-critical .health-label i { background: #cb635a; }
 .lower-grid { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(260px,1fr); gap: 14px; margin-top: 14px; }
 .transaction-list { margin-top: 13px; }
-.mini-row { display: flex; align-items: center; gap: 9px; padding: 9px 0; border-top: 1px solid #f0f2ef; }
+.transaction-types-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.transaction-selector-panel { margin-bottom: 0; }
+.transaction-selector { max-width: 360px; }
+.transaction-selector select { width: 100%; }
+.transaction-type-panel { display: flex; min-width: 0; flex-direction: column; }
+.transaction-type-panel .panel-header { align-items: center; }
+.transaction-type-panel .section-gap { margin: 5px 0 0; }
+.transaction-total { font: 800 15px Manrope,sans-serif; text-align: right; white-space: nowrap; }
+.transaction-total.positive { color: #4d8b60; }
+.transaction-total.negative { color: #bd665c; }
+.transaction-type-list { min-width: 0; margin-top: 11px; }
+.transaction-type-list .mini-row:first-child { border-top: 1px solid #f0f2ef; }
+.transaction-type-empty { display: grid; min-height: 88px; place-items: center; color: #929b93; font-size: 10px; text-align: center; }
+.transaction-add-button { align-self: flex-start; margin-top: 9px; }
+.transaction-single-panel { min-width: 0; }
+.transaction-single-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.transaction-record-list { border-top: 1px solid #f0f2ef; }
+.transaction-record { min-width: 0; padding: 10px 0; border-bottom: 1px solid #f0f2ef; }
+.transaction-record-main { display: flex; min-width: 0; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.transaction-record-info { min-width: 0; flex: 1; }
+.transaction-record-meta { display: flex; min-width: 0; align-items: center; flex-wrap: wrap; gap: 5px 7px; color: #929b93; font-size: 9px; }
+.transaction-record-meta .category-badge { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+.transaction-record-account { margin-top: 4px; color: #929b93; font-size: 9px; overflow-wrap: anywhere; }
+.transaction-record-side { display: flex; flex: none; align-items: flex-end; flex-direction: column; gap: 4px; }
+.transaction-record-amount { color: #536057; font-size: 10px; text-align: right; overflow-wrap: anywhere; }
+.transaction-record-amount.in { color: #4d8b60; }
+.transaction-record-amount.transfer-amount { color: #718078; }
+.transaction-record-note { margin: 6px 0 0; color: #657168; font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; white-space: pre-wrap; }
+.table-amount.transfer-amount { color: #718078; }
+.mini-symbol.transfer { background: #eef2f5; color: #637c91; }
+.mini-amount:not(.in):not(.out) { color: #718078; }
+.mini-row { display: flex; align-items: flex-start; gap: 9px; padding: 9px 0; border-top: 1px solid #f0f2ef; }
 .mini-symbol { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 8px; background: #eef5ed; color: var(--green); }
 .mini-symbol.out { background: #fff3e8; color: #bb8550; }
 .mini-copy { min-width: 0; flex: 1; }
 .mini-copy strong { display: block; overflow: hidden; color: #38443b; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .mini-copy small { display: block; margin-top: 3px; color: #929b93; font-size: 9px; }
+.mini-copy small.mini-note { color: #657168; line-height: 1.45; overflow-wrap: anywhere; white-space: pre-wrap; }
 .mini-amount { font-size: 10px; font-weight: 700; white-space: nowrap; }
 .mini-amount.in { color: #4d8b60; }
 .mini-amount.out { color: #536057; }
@@ -273,7 +305,7 @@ h1 { margin: 6px 0 5px; font: 800 25px Manrope,sans-serif; letter-spacing: -.8px
   .page-content,.demo-notice { width: calc(100% - 30px); }
   .page-content { padding-top: 22px; }
   .demo-notice { margin-top: 12px; align-items: flex-start; line-height: 1.5; }
-  .dashboard-grid,.lower-grid,.report-layout,.settings-layout { grid-template-columns: 1fr; }
+  .dashboard-grid,.lower-grid,.report-layout,.settings-layout,.transaction-types-grid { grid-template-columns: 1fr; }
   .app-footer { padding: 12px 15px; flex-direction: column; }
   .page-heading { align-items: flex-start; flex-direction: column; }
   .heading-actions { width: 100%; justify-content: flex-start; }

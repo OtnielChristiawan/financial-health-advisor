@@ -4,7 +4,7 @@ import calendar
 from datetime import date
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
 
 class FinanceOpening(BaseModel):
@@ -25,12 +25,23 @@ class FinanceTransaction(BaseModel):
     id: str = Field(min_length=1, max_length=100)
     date: date
     description: str = Field(min_length=1, max_length=90)
-    kind: Literal["revenue", "expense", "capital", "loan", "draw", "principal", "asset"]
+    kind: Literal["revenue", "expense", "capital", "loan", "draw", "principal", "asset", "transfer"]
     category: str = Field(min_length=1, max_length=80)
     amount: StrictInt = Field(gt=0, le=9_000_000_000_000_000)
     account: Literal["cash", "bank"]
     note: str = Field(default="", max_length=500)
     asset_id: str | None = Field(default=None, alias="assetId")
+    transfer_to: Literal["cash", "bank"] | None = Field(default=None, alias="transferTo")
+
+    @model_validator(mode="after")
+    def validate_transfer_accounts(self) -> FinanceTransaction:
+        if self.kind == "transfer" and self.transfer_to is None:
+            raise ValueError("Akun tujuan wajib diisi untuk perpindahan saldo.")
+        if self.kind == "transfer" and self.account == self.transfer_to:
+            raise ValueError("Akun asal dan tujuan perpindahan saldo harus berbeda.")
+        if self.kind != "transfer" and self.transfer_to is not None:
+            raise ValueError("Akun tujuan hanya dapat diisi untuk perpindahan saldo.")
+        return self
 
 
 class FinanceAsset(BaseModel):
@@ -75,6 +86,16 @@ def _amount(transactions: list[FinanceTransaction], predicate: Any) -> int:
 
 def _cash_delta(transaction: FinanceTransaction) -> int:
     return transaction.amount if transaction.kind in {"revenue", "capital", "loan"} else -transaction.amount
+
+
+def _account_delta(transaction: FinanceTransaction, account: str) -> int:
+    if transaction.kind == "transfer":
+        if transaction.account == account:
+            return -transaction.amount
+        if transaction.transfer_to == account:
+            return transaction.amount
+        return 0
+    return _cash_delta(transaction) if transaction.account == account else 0
 
 
 def _monthly_depreciation(assets: list[FinanceAsset], month: str) -> float:
@@ -150,12 +171,8 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
         for transaction in workspace.transactions
         if workspace.opening.date < transaction.date <= end_date
     ]
-    cash = workspace.opening.cash + sum(
-        _cash_delta(transaction) for transaction in all_through if transaction.account == "cash"
-    )
-    bank = workspace.opening.bank + sum(
-        _cash_delta(transaction) for transaction in all_through if transaction.account == "bank"
-    )
+    cash = workspace.opening.cash + sum(_account_delta(transaction, "cash") for transaction in all_through)
+    bank = workspace.opening.bank + sum(_account_delta(transaction, "bank") for transaction in all_through)
     bought_assets = _amount(all_through, lambda tx: tx.kind == "asset")
     first_depreciation_month = _month_number(workspace.opening.date.strftime("%Y-%m")) + 1
     report_month_number = _month_number(month)
