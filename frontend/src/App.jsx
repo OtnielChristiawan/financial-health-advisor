@@ -91,16 +91,51 @@ function readLocalData() {
   if (parsed?.version !== 1 || !Array.isArray(parsed.transactions) || !Array.isArray(parsed.assets)) throw new Error("Format data browser tidak dikenali.");
   return parsed;
 }
+const LOCAL_USERS_KEY = "ruangusaha-users-v1";
+const LOCAL_SESSION_KEY = "ruangusaha-active-session";
+
+function getLocalUsers() {
+  try {
+    const raw = localStorage.getItem(LOCAL_USERS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { console.error(e); }
+  const defaultUsers = {
+    "admin_trial": {
+      username: "admin_trial",
+      password: "12345",
+      fullName: "Admin Trial UMKM",
+      workspaceKey: `${STORAGE_KEY}-admin_trial`
+    }
+  };
+  // Siapkan data contoh untuk admin_trial jika belum ada
+  if (!localStorage.getItem(`${STORAGE_KEY}-admin_trial`)) {
+    try {
+      // Jika ada data lama di STORAGE_KEY, gunakan itu, jika tidak gunakan sampleData()
+      const existing = localStorage.getItem(STORAGE_KEY);
+      localStorage.setItem(`${STORAGE_KEY}-admin_trial`, existing || JSON.stringify(sampleData()));
+    } catch (e) {}
+  }
+  try { localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(defaultUsers)); } catch (e) {}
+  return defaultUsers;
+}
+
+function getActiveLocalSession() {
+  try {
+    const raw = localStorage.getItem(LOCAL_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 function App() {
   const [page, setPage] = useState("dashboard");
   const [period, setPeriod] = useState("2026-09");
-  const [data, setData] = useState(() => {
-    try { return readLocalData(); } catch (error) { console.error(error); return emptyData(); }
-  });
+  const [localSession, setLocalSession] = useState(() => getActiveLocalSession());
   const [session, setSession] = useState(null);
   const [demoSession, setDemoSession] = useState(false);
-  const [authReady, setAuthReady] = useState(!supabaseConfigured);
-  const [workspaceReady, setWorkspaceReady] = useState(!supabaseConfigured);
+  const [authReady, setAuthReady] = useState(true);
+  const [workspaceReady, setWorkspaceReady] = useState(false);
   const [workspaceError, setWorkspaceError] = useState("");
   const [workspaceRetry, setWorkspaceRetry] = useState(0);
   const [authMode, setAuthMode] = useState("login");
@@ -115,6 +150,17 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [newTransactionKind, setNewTransactionKind] = useState("revenue");
+
+  const [data, setData] = useState(() => {
+    const active = getActiveLocalSession();
+    if (active?.workspaceKey) {
+      try {
+        const stored = localStorage.getItem(active.workspaceKey);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+    }
+    return sampleData();
+  });
 
   useEffect(() => {
     if (!supabaseConfigured) return undefined;
@@ -132,11 +178,31 @@ function App() {
     return () => { active = false; listener.subscription.unsubscribe(); };
   }, []);
 
+  // Muat workspace berdasarkan sesi (Supabase atau Local Multi-User)
   useEffect(() => {
     if (!supabaseConfigured) {
+      if (localSession?.workspaceKey) {
+        try {
+          const stored = localStorage.getItem(localSession.workspaceKey);
+          if (stored) {
+            setData(JSON.parse(stored));
+          } else {
+            const initial = localSession.username === "admin_trial" ? sampleData() : emptyData(localSession.fullName || localSession.username);
+            setData(initial);
+            localStorage.setItem(localSession.workspaceKey, JSON.stringify(initial));
+          }
+          setWorkspaceError("");
+        } catch (error) {
+          console.error(error);
+          setWorkspaceError(`Gagal memuat data lokal: ${error.message}`);
+        }
+      } else {
+        setData(emptyData());
+      }
       setWorkspaceReady(true);
       return undefined;
     }
+
     if (demoSession) {
       try {
         setData(readLocalData());
@@ -175,11 +241,23 @@ function App() {
       if (active) { setWorkspaceError(`Gagal memuat workspace Supabase: ${error.message}`); setWorkspaceReady(true); }
     });
     return () => { active = false; };
-  }, [session?.user?.id, demoSession, workspaceRetry]);
+  }, [session?.user?.id, demoSession, localSession?.username, workspaceRetry]);
 
+  // Simpan data setiap ada perubahan
   useEffect(() => {
     if (!workspaceReady || workspaceError) return undefined;
-    if (!supabaseConfigured || demoSession) {
+    if (!supabaseConfigured) {
+      if (localSession?.workspaceKey) {
+        try {
+          localStorage.setItem(localSession.workspaceKey, JSON.stringify(data));
+        } catch (error) {
+          console.error(error);
+          setNotice(`Data gagal disimpan di browser: ${error.message}`);
+        }
+      }
+      return undefined;
+    }
+    if (demoSession) {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
       catch (error) { console.error(error); setNotice(`Data gagal disimpan di browser: ${error.message}`); }
       return undefined;
@@ -190,7 +268,7 @@ function App() {
       if (error) { console.error(error); setNotice(`Gagal menyimpan ke Supabase: ${error.message}`); }
     }, 450);
     return () => window.clearTimeout(timer);
-  }, [data, session?.user?.id, workspaceReady, workspaceError, demoSession]);
+  }, [data, session?.user?.id, workspaceReady, workspaceError, demoSession, localSession?.workspaceKey]);
 
   const availableMonths = useMemo(() => {
     const found = new Set(data.transactions.map((tx) => monthOf(tx.date)));
@@ -280,41 +358,123 @@ function App() {
     setShowForm(true);
   };
 
+  const handleSignOut = () => {
+    if (supabaseConfigured && session) {
+      supabase.auth.signOut();
+    } else {
+      localStorage.removeItem(LOCAL_SESSION_KEY);
+      setLocalSession(null);
+      setDemoSession(false);
+    }
+  };
+
   async function handleAuth(event) {
     event.preventDefault();
     setAuthError("");
     setAuthMessage("");
     setAuthSubmitting(true);
     const form = new FormData(event.currentTarget);
-    const email = String(form.get("email")).trim();
+    const usernameOrEmail = String(form.get("email")).trim();
     const password = String(form.get("password"));
     const fullName = String(form.get("fullName") || "").trim();
-    if (authMode === "signup" && !fullName) {
-      setAuthError("Nama pemilik wajib diisi.");
-      setAuthSubmitting(false);
+
+    if (supabaseConfigured) {
+      if (authMode === "signup" && !fullName) {
+        setAuthError("Nama pemilik wajib diisi.");
+        setAuthSubmitting(false);
+        return;
+      }
+      try {
+        const result = authMode === "signup"
+          ? await supabase.auth.signUp({ email: usernameOrEmail, password, options: { data: { full_name: fullName } } })
+          : await supabase.auth.signInWithPassword({ email: usernameOrEmail, password });
+        if (result.error) setAuthError(result.error.message);
+        else if (authMode === "signup" && !result.data.session) {
+          setAuthMode("login");
+          setAuthMessage("Akun berhasil dibuat. Periksa email untuk konfirmasi, lalu masuk.");
+        } else if (authMode === "signup") {
+          setAuthMessage("Akun berhasil dibuat. Workspace baru sudah disiapkan untukmu.");
+        }
+      } catch (error) {
+        setAuthError(`Autentikasi gagal: ${error.message}`);
+      } finally {
+        setAuthSubmitting(false);
+      }
       return;
     }
-    try {
-      const result = authMode === "signup"
-        ? await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } })
-        : await supabase.auth.signInWithPassword({ email, password });
-      if (result.error) setAuthError(result.error.message);
-      else if (authMode === "signup" && !result.data.session) {
-        setAuthMode("login");
-        setAuthMessage("Akun berhasil dibuat. Periksa email untuk konfirmasi, lalu masuk.");
-      } else if (authMode === "signup") {
-        setAuthMessage("Akun berhasil dibuat. Workspace baru sudah disiapkan untukmu.");
+
+    // --- Mode Lokal Multi-User (Offline / Tanpa Supabase) ---
+    setTimeout(() => {
+      try {
+        const users = getLocalUsers();
+        if (authMode === "login") {
+          const user = users[usernameOrEmail.toLowerCase()];
+          if (!user || user.password !== password) {
+            setAuthError("Username/email atau kata sandi salah. Coba username: admin_trial, pass: 12345");
+            setAuthSubmitting(false);
+            return;
+          }
+          const currentSession = {
+            username: user.username,
+            fullName: user.fullName,
+            workspaceKey: user.workspaceKey
+          };
+          localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(currentSession));
+          setLocalSession(currentSession);
+          setDemoSession(false);
+        } else {
+          // Signup mode
+          if (!fullName) {
+            setAuthError("Nama pemilik wajib diisi.");
+            setAuthSubmitting(false);
+            return;
+          }
+          const cleanKey = usernameOrEmail.toLowerCase();
+          if (users[cleanKey]) {
+            setAuthError("Username atau email ini sudah terdaftar.");
+            setAuthSubmitting(false);
+            return;
+          }
+          const newWorkspaceKey = `${STORAGE_KEY}-${cleanKey}`;
+          users[cleanKey] = {
+            username: usernameOrEmail,
+            password,
+            fullName,
+            workspaceKey: newWorkspaceKey
+          };
+          localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(users));
+          // Buat workspace bersih untuk akun baru
+          const newWorkspace = emptyData(fullName);
+          localStorage.setItem(newWorkspaceKey, JSON.stringify(newWorkspace));
+
+          setAuthMode("login");
+          setAuthMessage(`Akun ${usernameOrEmail} berhasil dibuat! Silakan masuk.`);
+        }
+      } catch (err) {
+        setAuthError(`Terjadi kesalahan sistem: ${err.message}`);
+      } finally {
+        setAuthSubmitting(false);
       }
-    } catch (error) {
-      setAuthError(`Autentikasi gagal: ${error.message}`);
-    } finally {
-      setAuthSubmitting(false);
-    }
+    }, 200);
   }
 
   if (!authReady || !workspaceReady) return <div className="app-loading">Memuat RuangUsaha…</div>;
-  if (supabaseConfigured && !session && !demoSession) return <AuthPage mode={authMode} setMode={(mode) => { setAuthMode(mode); setAuthError(""); setAuthMessage(""); }} onSubmit={handleAuth} error={authError} message={authMessage} submitting={authSubmitting} onDemo={() => { setDemoSession(true); setPage("dashboard"); }} />;
-  if (workspaceError) return <main className="prototype-auth"><span className="brand-mark">R</span><h1>Workspace belum dapat dimuat</h1><p>{workspaceError}</p><button className="button button-primary" onClick={() => setWorkspaceRetry((value) => value + 1)}>Coba lagi</button>{supabaseConfigured&&session&&<button className="button button-secondary" style={{marginLeft:8}} onClick={() => supabase.auth.signOut()}>Keluar</button>}</main>;
+  
+  // Tampilkan AuthPage jika belum ada session (baik di Supabase atau Local) dan bukan mode demo
+  const isAuthenticated = supabaseConfigured ? Boolean(session || demoSession) : Boolean(localSession || demoSession);
+  if (!isAuthenticated) {
+    return <AuthPage
+      mode={authMode}
+      setMode={(mode) => { setAuthMode(mode); setAuthError(""); setAuthMessage(""); }}
+      onSubmit={handleAuth}
+      error={authError}
+      message={authMessage}
+      submitting={authSubmitting}
+      onDemo={() => { setDemoSession(true); setPage("dashboard"); }}
+    />;
+  }
+
+  if (workspaceError) return <main className="prototype-auth"><span className="brand-mark">R</span><h1>Workspace belum dapat dimuat</h1><p>{workspaceError}</p><button className="button button-primary" onClick={() => setWorkspaceRetry((value) => value + 1)}>Coba lagi</button><button className="button button-secondary" style={{marginLeft:8}} onClick={handleSignOut}>Keluar</button></main>;
   if (!report || !analysis) {
     if (financialReport.status === "error" && financialReport.request === reportRequest) {
       return <main className="prototype-auth"><h1>Laporan belum dapat dimuat</h1><p>{financialReport.error}</p><button className="button button-primary" onClick={() => setReportRetry((value) => value + 1)}>Coba lagi</button></main>;
@@ -333,22 +493,25 @@ function App() {
     if (page === "reports") return <Reports data={data} report={report} period={period} setPeriod={setPeriod} months={availableMonths} tab={reportTab} setTab={setReportTab} />;
     if (page === "analysis") return <Analysis analysis={analysis} period={period} setPeriod={setPeriod} months={availableMonths} reasoner={reasoner} />;
     if (page === "assets") return <Assets data={data} report={report} openTransaction={openTransaction} />;
-    return <Settings data={data} setData={setData} notify={notify} onSignOut={supabaseConfigured ? demoSession ? () => setDemoSession(false) : () => supabase.auth.signOut() : null} />;
+    return <Settings data={data} setData={setData} notify={notify} onSignOut={handleSignOut} />;
   };
+
+  const currentEmailOrUser = session?.user?.email || localSession?.username || (demoSession ? "Tamu (Mode Demo)" : "Pengguna");
+  const currentOwner = data.profile.ownerName || localSession?.fullName || "Pemilik usaha";
 
   return <div className="app-shell">
     <aside className="sidebar">
       <a className="brand" href="#" onClick={(event) => { event.preventDefault(); setPage("dashboard"); }}><span className="brand-mark">R</span><span className="brand-copy"><strong>ruangusaha</strong><small>FINANCIAL HEALTH</small></span></a>
-      <div className="business-switcher"><span className="business-avatar">KS</span><span className="business-info"><strong>{data.profile.businessName}</strong><small>{session?.user?.email || (demoSession ? "Akun demo · data di perangkat ini" : "Usaha aktif")}</small></span><span className="switch-chevron">⌄</span></div>
+      <div className="business-switcher"><span className="business-avatar">KS</span><span className="business-info"><strong>{data.profile.businessName}</strong><small>{currentEmailOrUser}</small></span><span className="switch-chevron">⌄</span></div>
       <p className="nav-label">MENU UTAMA</p><nav className="main-nav" aria-label="Navigasi utama">{nav.slice(0,5).map(([key,icon,label])=><button key={key} className={`nav-item ${page===key?"active":""}`} onClick={()=>setPage(key)}><span className="nav-icon">{icon}</span>{label}{key==="analysis"&&<span className="nav-pill">BARU</span>}</button>)}</nav>
       <p className="nav-label nav-label-bottom">PREFERENSI</p><nav className="main-nav"><button className={`nav-item ${page==="settings"?"active":""}`} onClick={()=>setPage("settings")}><span className="nav-icon">⚙</span>Pengaturan usaha</button></nav>
-      <div className="sidebar-bottom"><div className="help-card"><span className="help-spark">✦</span><strong>Keuangan lebih jelas.</strong><p>Pahami bukan hanya hasilnya, tapi juga alasan di baliknya.</p><button onClick={()=>setPage("analysis")}>Lihat cara kerja <span>→</span></button></div><div className="profile-row"><span className="profile-avatar">AR</span><span><strong>{data.profile.ownerName}</strong><small>{session?.user?.email || "Pemilik usaha"}</small></span>{supabaseConfigured&&<button className="profile-more" aria-label="Keluar" onClick={()=>supabase.auth.signOut()}>↪</button>}</div></div>
+      <div className="sidebar-bottom"><div className="help-card"><span className="help-spark">✦</span><strong>Keuangan lebih jelas.</strong><p>Pahami bukan hanya hasilnya, tapi juga alasan di baliknya.</p><button onClick={()=>setPage("analysis")}>Lihat cara kerja <span>→</span></button></div><div className="profile-row"><span className="profile-avatar">AR</span><span><strong>{currentOwner}</strong><small>{currentEmailOrUser}</small></span><button className="profile-more" title="Keluar / Logout" aria-label="Keluar" onClick={handleSignOut}>↪</button></div></div>
     </aside>
-    <main className="main-area"><header className="topbar"><div className="breadcrumb"><span>RuangUsaha</span><span className="crumb-sep">/</span><strong>{TITLES[page]}</strong></div><div className="topbar-actions"><span className="local-badge"><i></i>{supabaseConfigured&&!demoSession?"Database Supabase":"Data tersimpan di perangkat ini"}</span><button className="icon-button" title="Bantuan" onClick={()=>setPage("analysis")}>?</button><span className="top-avatar">AR</span></div></header>
-      {data.demo&&(demoSession||!supabaseConfigured)&&<div className="demo-notice"><span>ⓘ</span><span><strong>Mode data contoh.</strong> Angka simulasi ini tersimpan lokal dan terpisah dari akunmu.</span><button aria-label="Tutup" onClick={()=>setData({...data,demo:false})}>×</button></div>}
+    <main className="main-area"><header className="topbar"><div className="breadcrumb"><span>RuangUsaha</span><span className="crumb-sep">/</span><strong>{TITLES[page]}</strong></div><div className="topbar-actions"><span className="local-badge"><i></i>{supabaseConfigured&&!demoSession?"Database Supabase":`Akun Lokal: ${currentEmailOrUser}`}</span><button className="icon-button" title="Bantuan" onClick={()=>setPage("analysis")}>?</button><span className="top-avatar">AR</span></div></header>
+      {data.demo&&(demoSession||!supabaseConfigured)&&<div className="demo-notice"><span>ⓘ</span><span><strong>Mode data contoh ({currentEmailOrUser}).</strong> Angka simulasi ini tersimpan di akun ini.</span><button aria-label="Tutup" onClick={()=>setData({...data,demo:false})}>×</button></div>}
       {notice&&<div className="notice-error" role="status">{notice}</div>}
       <div className="page-content">{renderPage()}</div>
-      <footer className="app-footer"><span>RuangUsaha {new Date().getFullYear()} · Asisten keuangan untuk UMKM</span><span>Alat bantu keputusan, bukan pengganti saran akuntan.</span>{demoSession&&<button className="panel-link" onClick={()=>setDemoSession(false)}>Keluar dari akun demo</button>}</footer>
+      <footer className="app-footer"><span>RuangUsaha {new Date().getFullYear()} · Asisten keuangan untuk UMKM</span><span>Alat bantu keputusan, bukan pengganti saran akuntan.</span>{demoSession&&<button className="panel-link" onClick={handleSignOut}>Keluar dari akun demo</button>}</footer>
     </main>
     {showForm&&<TransactionModal initial={editing} initialAsset={data.assets.find((asset)=>asset.id===editing?.assetId)} initialKind={newTransactionKind} onClose={()=>{setShowForm(false);setEditing(null);}} onSave={(tx,asset)=>{setData((old)=>({...old,demo:false,transactions:old.transactions.some((item)=>item.id===tx.id)?old.transactions.map((item)=>item.id===tx.id?tx:item):[...old.transactions,tx],assets:asset?old.assets.some((item)=>item.id===asset.id)?old.assets.map((item)=>item.id===asset.id?asset:item):[...old.assets,asset]:old.assets.filter((item)=>item.id!==editing?.assetId)}));setPeriod(monthOf(tx.date));setShowForm(false);setEditing(null);notify("Transaksi berhasil disimpan.");}} />}
   </div>;
@@ -532,20 +695,24 @@ function AuthPage({mode,setMode,onSubmit,error,message,submitting,onDemo}) {
   return <main className="prototype-auth">
     <span className="brand-mark">R</span>
     <h1>{mode==="signup"?"Buat akun RuangUsaha":"Masuk ke RuangUsaha"}</h1>
-    <p>{mode==="signup"?"Workspace baru akan dibuat khusus untuk akunmu.":"Masuk untuk membuka workspace keuangan milikmu."} Data akun disimpan dengan Supabase.</p>
+    <p>{mode==="signup"?"Workspace baru akan dibuat khusus untuk akunmu.":"Masuk untuk membuka workspace keuangan milikmu."}</p>
+    <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:8,padding:"10px 14px",fontSize:"0.84rem",marginBottom:16,color:"var(--text-muted, #ccc)"}}>
+      <strong>Akun Testing / Uji Coba:</strong><br/>
+      Username: <code style={{color:"#8be9fd"}}>admin_trial</code> | Password: <code style={{color:"#8be9fd"}}>12345</code>
+    </div>
     <form onSubmit={(event)=>{submit(event);if(!event.defaultPrevented)onSubmit(event);}}>
-      {mode==="signup"&&<label className="field"><span>Nama pemilik</span><input name="fullName" autoComplete="name" maxLength="80" required/></label>}
-      <label className="field"><span>Email</span><input type="email" name="email" autoComplete="email" required/></label>
-      <label className="field"><span>Kata sandi</span><input type="password" name="password" minLength="8" autoComplete={mode==="signup"?"new-password":"current-password"} required onChange={(event)=>{const confirm=event.currentTarget.form.elements.namedItem("confirmPassword");if(confirm?.value)confirm.setCustomValidity(confirm.value===event.currentTarget.value?"":"Kata sandi belum sama.");}}/></label>
-      {mode==="signup"&&<label className="field"><span>Ulangi kata sandi</span><input type="password" name="confirmPassword" minLength="8" autoComplete="new-password" required onChange={(event)=>{event.currentTarget.setCustomValidity(event.currentTarget.value===event.currentTarget.form.elements.namedItem("password").value?"":"Kata sandi belum sama.");}}/></label>}
+      {mode==="signup"&&<label className="field"><span>Nama pemilik / usaha</span><input name="fullName" autoComplete="name" maxLength="80" required placeholder="Contoh: Budi Santoso" /></label>}
+      <label className="field"><span>Username / Email</span><input type="text" name="email" autoComplete="username" required placeholder="admin_trial atau email kamu" /></label>
+      <label className="field"><span>Kata sandi</span><input type="password" name="password" minLength="4" autoComplete={mode==="signup"?"new-password":"current-password"} required placeholder="Minimal 4 karakter" onChange={(event)=>{const confirm=event.currentTarget.form.elements.namedItem("confirmPassword");if(confirm?.value)confirm.setCustomValidity(confirm.value===event.currentTarget.value?"":"Kata sandi belum sama.");}}/></label>
+      {mode==="signup"&&<label className="field"><span>Ulangi kata sandi</span><input type="password" name="confirmPassword" minLength="4" autoComplete="new-password" required placeholder="Ulangi kata sandi" onChange={(event)=>{event.currentTarget.setCustomValidity(event.currentTarget.value===event.currentTarget.form.elements.namedItem("password").value?"":"Kata sandi belum sama.");}}/></label>}
       {error&&<div className="notice-error" role="alert">{error}</div>}
       {message&&<div className="auth-message" role="status">{message}</div>}
-      <button className="button button-primary" type="submit" style={{width:"100%",marginTop:14}} disabled={submitting}>{submitting?"Memproses…":mode==="signup"?"Buat akun":"Masuk"}</button>
+      <button className="button button-primary" type="submit" style={{width:"100%",marginTop:14}} disabled={submitting}>{submitting?"Memproses…":mode==="signup"?"Buat akun baru":"Masuk"}</button>
     </form>
     <p className="auth-switch">{mode==="signup"?"Sudah punya akun?":"Belum punya akun?"} <button className="panel-link" type="button" onClick={()=>setMode(mode==="signup"?"login":"signup")}>{mode==="signup"?"Masuk":"Daftar sekarang"}</button></p>
     <div className="auth-divider"><span>atau</span></div>
-    <button className="button button-secondary auth-demo-button" type="button" onClick={onDemo}>Coba akun demo</button>
-    <p className="auth-footnote">Data demo contoh hanya tersimpan di perangkat ini dan terpisah dari workspace akun.</p>
+    <button className="button button-secondary auth-demo-button" type="button" onClick={onDemo}>Masuk sebagai Tamu (Guest Demo)</button>
+    <p className="auth-footnote">Setiap akun memiliki workspace catatan keuangan tersendiri yang terpisah.</p>
   </main>;
 }
 
