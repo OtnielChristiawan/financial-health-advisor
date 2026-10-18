@@ -1,16 +1,114 @@
 #root { min-height: 100vh; }
 .app-loading { min-height: 100vh; display:grid; place-items:center; color:#77847a; font-size:13px; }
-.prototype-auth { max-width:420px; margin:10vh auto; padding:28px; border:1px solid var(--line); border-radius:12px; background:#fff; }
-.prototype-auth > .brand-mark { display:grid; place-items:center; width:36px; height:36px; border-radius:10px; background:#e9f2e7; color:var(--green); font:800 19px Manrope,sans-serif; }
-.prototype-auth h1 { font-size:21px; }
-.prototype-auth p { color:var(--muted); font-size:11px; line-height:1.7; }
-.prototype-auth .field { margin:12px 0; }
-.auth-message { margin-top:12px; padding:10px; border-radius:6px; background:#eef6ec; color:#4f7753; font-size:10px; line-height:1.6; }
-.auth-switch { margin-top:15px; text-align:center; }
-.auth-divider { display:flex; align-items:center; gap:10px; margin:18px 0 12px; color:var(--muted); font-size:10px; }
-.auth-divider::before,.auth-divider::after { height:1px; flex:1; background:var(--line); content:""; }
-.auth-demo-button { width:100%; }
-.auth-footnote { margin-bottom:0; font-size:9px !important; text-align:center; }
+.prototype-auth {
+  max-width: 460px;
+  margin: 6vh auto 8vh;
+  padding: 38px 36px 32px;
+  border: 1px solid rgba(232, 236, 229, 0.9);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 20px 45px -10px rgba(32, 59, 40, 0.08), 0 1px 3px rgba(0,0,0,0.03);
+}
+.prototype-auth > .brand-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--green), #1b4933);
+  color: #ffffff;
+  font: 800 24px Manrope, sans-serif;
+  box-shadow: 0 8px 18px rgba(47, 118, 84, 0.25);
+  margin-bottom: 6px;
+}
+.prototype-auth h1 {
+  font: 800 26px Manrope, sans-serif;
+  letter-spacing: -0.8px;
+  color: #1a241d;
+  margin: 14px 0 6px;
+}
+.prototype-auth p {
+  color: #6d7970;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.prototype-auth .field {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.prototype-auth .field span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #435146;
+}
+.prototype-auth .field input {
+  padding: 11px 14px;
+  border: 1.5px solid #e1e7de;
+  border-radius: 10px;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  background: #fbfdfa;
+}
+.prototype-auth .field input:focus {
+  border-color: var(--green);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(47, 118, 84, 0.12);
+}
+.auth-message {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #eef7ee;
+  border: 1px solid #d4ebd4;
+  color: #2b6838;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.auth-switch {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px !important;
+  color: #657467;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 16px;
+  color: #9aa59c;
+  font-size: 11.5px;
+}
+.auth-divider::before, .auth-divider::after {
+  height: 1px;
+  flex: 1;
+  background: #e5ece2;
+  content: "";
+}
+.auth-demo-button {
+  width: 100%;
+  min-height: 44px;
+  border: 1.5px solid #dbe4d9;
+  border-radius: 10px;
+  font-size: 13px;
+  background: #fbfdfa;
+  color: #3b4b3f;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.auth-demo-button:hover {
+  background: #f1f6ef;
+  border-color: #c4d7c1;
+}
+.auth-footnote {
+  margin-top: 14px;
+  margin-bottom: 0;
+  font-size: 11px !important;
+  color: #8c988e;
+  text-align: center;
+  line-height: 1.5;
+}
 .top-avatar { border:0; cursor:pointer; }
 .report-data-note { margin: 13px 0 0; }
 .reasoner-pill { margin-top:10px; padding:8px 10px; border-radius:6px; background:#f5f8f3; color:#6b786d; font-size:9px; }
@@ -22,3 +120,4 @@
 .modal-backdrop { position:fixed; z-index:100; inset:0; display:grid; place-items:center; padding:14px; background:rgba(25,39,29,.38); backdrop-filter:blur(2px); }
 .modal-box { width:min(560px,100%); max-height:calc(100vh - 28px); overflow-y:auto; padding:20px; border:1px solid var(--line); border-radius:12px; background:var(--paper); color:var(--ink); box-shadow:0 22px 70px rgba(20,35,25,.2); }
 @media(max-width:480px) { .transaction-form { grid-template-columns:1fr; } .transaction-form .field-wide { grid-column:auto; } }
+.report-table .indent-2 td:first-child { padding-left: 36px; color: #889389; font-size: 12px; }

@@ -122,5 +122,23 @@ class FinancialReportTests(unittest.TestCase):
             FinanceWorkspace.model_validate(workspace)
 
 
+    def test_opex_subcategories_and_breakdown(self) -> None:
+        workspace = workspace_fixture()
+        workspace["transactions"].extend([
+            {"id": "sep-payroll", "date": "2026-09-08", "description": "Gaji barista", "kind": "expense", "category": "Beban Pegawai (Gaji, THR, BPJS)", "amount": 15_000_000, "account": "cash"},
+            {"id": "sep-util", "date": "2026-09-09", "description": "Listrik & air", "kind": "expense", "category": "Beban Utilitas & Tempat (Listrik, Air, Sewa)", "amount": 5_000_000, "account": "cash"},
+            {"id": "sep-ops", "date": "2026-09-10", "description": "Cup & sedotan", "kind": "expense", "category": "Beban Operasional & Umum (Supplies, ATK)", "amount": 3_000_000, "account": "cash"},
+            {"id": "sep-maint", "date": "2026-09-11", "description": "Servis grinder", "kind": "expense", "category": "Beban Pemeliharaan (Servis Mesin, AC)", "amount": 2_000_000, "account": "cash"},
+            {"id": "sep-mkt", "date": "2026-09-15", "description": "Promo IG & MDR", "kind": "expense", "category": "Beban Pemasaran (Iklan, Promo, MDR)", "amount": 4_000_000, "account": "cash"},
+        ])
+        report = build_financial_report(FinanceWorkspace.model_validate(workspace), "2026-09")["report"]
+        self.assertEqual(report["opexBreakdown"]["payroll"], 15_000_000)
+        self.assertEqual(report["opexBreakdown"]["utilities"], 5_000_000)
+        self.assertEqual(report["opexBreakdown"]["operational"], 3_000_000)
+        self.assertEqual(report["opexBreakdown"]["maintenance"], 2_000_000)
+        self.assertEqual(report["opex"], 25_000_000)
+        self.assertEqual(report["marketing"], 4_000_000)
+
+
 if __name__ == "__main__":
     unittest.main()

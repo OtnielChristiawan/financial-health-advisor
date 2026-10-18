@@ -114,14 +114,51 @@ def _monthly_depreciation(assets: list[FinanceAsset], month: str) -> float:
     return total
 
 
+OPEX_SUBCATEGORIES = {
+    "payroll": "Beban Pegawai (Gaji, THR, BPJS)",
+    "utilities": "Beban Utilitas & Tempat (Listrik, Air, Sewa)",
+    "operational": "Beban Operasional & Umum (Supplies, ATK)",
+    "maintenance": "Beban Pemeliharaan (Servis Mesin, AC)",
+}
+
+MARKETING_CATEGORIES = {
+    "Marketing",
+    "Beban Pemasaran (Iklan, Promo, MDR)",
+}
+
+
+def _is_opex(tx: FinanceTransaction) -> bool:
+    if tx.kind != "expense":
+        return False
+    if tx.category == "OPEX" or tx.category in OPEX_SUBCATEGORIES.values():
+        return True
+    if tx.category.startswith("Beban Pegawai") or tx.category.startswith("Beban Utilitas") or tx.category.startswith("Beban Operasional") or tx.category.startswith("Beban Pemeliharaan"):
+        return True
+    return False
+
+
+def _is_marketing(tx: FinanceTransaction) -> bool:
+    if tx.kind != "expense":
+        return False
+    return tx.category in MARKETING_CATEGORIES or tx.category.startswith("Beban Pemasaran")
+
+
 def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
     rows = [transaction for transaction in workspace.transactions if transaction.date.strftime("%Y-%m") == month]
     revenue = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category != "Pendapatan non-operasional")
-    cogs = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "COGS / HPP")
-    opex = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "OPEX")
-    marketing = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "Marketing")
+    cogs = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "COGS / HPP" or tx.category.startswith("COGS")))
+    
+    # Sub-kategori OPEX
+    payroll = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["payroll"] or tx.category.startswith("Beban Pegawai")))
+    utilities = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["utilities"] or tx.category.startswith("Beban Utilitas")))
+    operational = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["operational"] or tx.category.startswith("Beban Operasional")))
+    maintenance = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["maintenance"] or tx.category.startswith("Beban Pemeliharaan")))
+    general_opex = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "OPEX")
+    
+    opex = payroll + utilities + operational + maintenance + general_opex
+    marketing = _amount(rows, _is_marketing)
     non_operating_income = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category == "Pendapatan non-operasional")
-    non_operating_expense = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "Beban non-operasional")
+    non_operating_expense = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "Beban non-operasional" or tx.category.startswith("Beban non-operasional")))
     depreciation = _monthly_depreciation(workspace.assets, month)
     gross_profit = revenue - cogs
     net_profit = gross_profit - opex - marketing - depreciation + non_operating_income - non_operating_expense
@@ -130,6 +167,13 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
         "revenue": revenue,
         "cogs": cogs,
         "opex": opex,
+        "opexBreakdown": {
+            "payroll": payroll,
+            "utilities": utilities,
+            "operational": operational,
+            "maintenance": maintenance,
+            "general": general_opex,
+        },
         "marketing": marketing,
         "nonOperatingIncome": non_operating_income,
         "nonOperatingExpense": non_operating_expense,
@@ -216,6 +260,7 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
         "revenue": revenue,
         "cogs": cogs,
         "opex": opex,
+        "opexBreakdown": current.get("opexBreakdown", {}),
         "marketing": marketing,
         "nonOperatingIncome": non_operating_income,
         "nonOperatingExpense": non_operating_expense,
