@@ -135,8 +135,9 @@ class FinancialReportTests(unittest.TestCase):
         self.assertEqual(report["opexBreakdown"]["payroll"], 15_000_000)
         self.assertEqual(report["opexBreakdown"]["utilities"], 5_000_000)
         self.assertEqual(report["opexBreakdown"]["operational"], 3_000_000)
+        self.assertEqual(report["opexBreakdown"]["marketing"], 4_000_000)
         self.assertEqual(report["opexBreakdown"]["maintenance"], 2_000_000)
-        self.assertEqual(report["opex"], 25_000_000)
+        self.assertEqual(report["opex"], 29_000_000)
         self.assertEqual(report["marketing"], 4_000_000)
 
 

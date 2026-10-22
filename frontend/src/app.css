@@ -121,3 +121,13 @@
 .modal-box { width:min(560px,100%); max-height:calc(100vh - 28px); overflow-y:auto; padding:20px; border:1px solid var(--line); border-radius:12px; background:var(--paper); color:var(--ink); box-shadow:0 22px 70px rgba(20,35,25,.2); }
 @media(max-width:480px) { .transaction-form { grid-template-columns:1fr; } .transaction-form .field-wide { grid-column:auto; } }
 .report-table .indent-2 td:first-child { padding-left: 36px; color: #889389; font-size: 12px; }
+.transaction-panel-scrollable { 
+  max-height: 480px; 
+  overflow-y: auto; 
+  padding-right: 12px; 
+  margin-right: -4px;
+}
+.transaction-panel-scrollable::-webkit-scrollbar { width: 5px; }
+.transaction-panel-scrollable::-webkit-scrollbar-track { background: transparent; }
+.transaction-panel-scrollable::-webkit-scrollbar-thumb { background: #d0dbce; border-radius: 4px; }
+.transaction-panel-scrollable::-webkit-scrollbar-thumb:hover { background: #b5c4b2; }

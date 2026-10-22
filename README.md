@@ -147,3 +147,7 @@ Deployment cloud belum dijalankan atau diverifikasi dari komputer ini. Siapkan a
 - `POST /api/analyze`: menjalankan analisis OWL/SWRL menggunakan Pellet dan Java 25+.
 
 Aplikasi ini masih berupa MVP. Data workspace dikirim ke API untuk perhitungan dan belum merupakan sistem akuntansi produksi.
+
+
+$env:JAVA25 = "C:\Program Files\BellSoft\LibericaJDK-25\bin\java.exe"
+>> .\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --reload --port 8000

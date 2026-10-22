@@ -115,14 +115,16 @@ def _monthly_depreciation(assets: list[FinanceAsset], month: str) -> float:
 
 
 OPEX_SUBCATEGORIES = {
-    "payroll": "Beban Pegawai (Gaji, THR, BPJS)",
-    "utilities": "Beban Utilitas & Tempat (Listrik, Air, Sewa)",
-    "operational": "Beban Operasional & Umum (Supplies, ATK)",
-    "maintenance": "Beban Pemeliharaan (Servis Mesin, AC)",
+    "payroll": "Beban Pegawai (HR/Payroll)",
+    "utilities": "Beban Utilitas & Tempat",
+    "operational": "Beban Operasional & Umum",
+    "marketing": "Beban Pemasaran (Marketing/Selling)",
+    "maintenance": "Beban Pemeliharaan",
 }
 
 MARKETING_CATEGORIES = {
     "Marketing",
+    "Beban Pemasaran (Marketing/Selling)",
     "Beban Pemasaran (Iklan, Promo, MDR)",
 }
 
@@ -132,7 +134,9 @@ def _is_opex(tx: FinanceTransaction) -> bool:
         return False
     if tx.category == "OPEX" or tx.category in OPEX_SUBCATEGORIES.values():
         return True
-    if tx.category.startswith("Beban Pegawai") or tx.category.startswith("Beban Utilitas") or tx.category.startswith("Beban Operasional") or tx.category.startswith("Beban Pemeliharaan"):
+    if any(tx.category.startswith(prefix) for prefix in [
+        "Beban Pegawai", "Beban Utilitas", "Beban Operasional", "Beban Pemasaran", "Beban Pemeliharaan", "Marketing"
+    ]):
         return True
     return False
 
@@ -140,7 +144,7 @@ def _is_opex(tx: FinanceTransaction) -> bool:
 def _is_marketing(tx: FinanceTransaction) -> bool:
     if tx.kind != "expense":
         return False
-    return tx.category in MARKETING_CATEGORIES or tx.category.startswith("Beban Pemasaran")
+    return tx.category in MARKETING_CATEGORIES or tx.category.startswith("Beban Pemasaran") or tx.category.startswith("Marketing")
 
 
 def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
@@ -148,20 +152,21 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
     revenue = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category != "Pendapatan non-operasional")
     cogs = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "COGS / HPP" or tx.category.startswith("COGS")))
     
-    # Sub-kategori OPEX
+    # 5 Sub-kategori OPEX
     payroll = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["payroll"] or tx.category.startswith("Beban Pegawai")))
     utilities = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["utilities"] or tx.category.startswith("Beban Utilitas")))
     operational = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["operational"] or tx.category.startswith("Beban Operasional")))
+    marketing = _amount(rows, _is_marketing)
     maintenance = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["maintenance"] or tx.category.startswith("Beban Pemeliharaan")))
     general_opex = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "OPEX")
     
-    opex = payroll + utilities + operational + maintenance + general_opex
-    marketing = _amount(rows, _is_marketing)
+    # Total OPEX mencakup semua 5 sub-kategori OPEX
+    opex = payroll + utilities + operational + marketing + maintenance + general_opex
     non_operating_income = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category == "Pendapatan non-operasional")
     non_operating_expense = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "Beban non-operasional" or tx.category.startswith("Beban non-operasional")))
     depreciation = _monthly_depreciation(workspace.assets, month)
     gross_profit = revenue - cogs
-    net_profit = gross_profit - opex - marketing - depreciation + non_operating_income - non_operating_expense
+    net_profit = gross_profit - opex - depreciation + non_operating_income - non_operating_expense
     return {
         "rows": [transaction.model_dump(by_alias=True, mode="json") for transaction in rows],
         "revenue": revenue,
@@ -171,6 +176,7 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
             "payroll": payroll,
             "utilities": utilities,
             "operational": operational,
+            "marketing": marketing,
             "maintenance": maintenance,
             "general": general_opex,
         },
@@ -196,7 +202,7 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
     non_operating_expense = current["nonOperatingExpense"]
     depreciation = current["depreciation"]
     gross_profit = revenue - cogs
-    operating_profit = gross_profit - opex - marketing - depreciation
+    operating_profit = gross_profit - opex - depreciation
     net_profit = operating_profit + non_operating_income - non_operating_expense
     operating_cash_flow = sum(
         transaction.amount if transaction.kind == "revenue" else
@@ -213,7 +219,7 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
     all_through = [
         transaction
         for transaction in workspace.transactions
-        if workspace.opening.date < transaction.date <= end_date
+        if workspace.opening.date <= transaction.date <= end_date
     ]
     cash = workspace.opening.cash + sum(_account_delta(transaction, "cash") for transaction in all_through)
     bank = workspace.opening.bank + sum(_account_delta(transaction, "bank") for transaction in all_through)
