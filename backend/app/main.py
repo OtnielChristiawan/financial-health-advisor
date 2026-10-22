@@ -67,14 +67,17 @@ allowed_origins = [
     for origin in os.environ.get("FRONTEND_ORIGINS", "").split(",")
     if origin.strip()
 ]
-if allowed_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=allowed_origins,
-        allow_credentials=True,
-        allow_methods=["GET", "POST"],
-        allow_headers=["Authorization", "Content-Type"],
-    )
+# If FRONTEND_ORIGINS is empty or contains wildcard, allow all for easy dev/ngrok demo
+if not allowed_origins:
+    allowed_origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True if allowed_origins != ["*"] else False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/api/health")

@@ -316,7 +316,10 @@ function App() {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/reports`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "true",
+                    },
                     body: reportRequest,
                     signal: controller.signal,
                 });
@@ -396,7 +399,12 @@ function App() {
             setReasoner({ status: "loading", result: null, error: "" });
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/analyze`, {
-                    method: "POST", headers: { "Content-Type": "application/json" }, body: reasonerPayload,
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "ngrok-skip-browser-warning": "true",
+                    },
+                    body: reasonerPayload,
                 });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.error || `Reasoner merespons ${response.status}.`);
