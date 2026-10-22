@@ -89,10 +89,11 @@ function sampleData() {
         opening: { date: "2026-07-31", cash: 12_000_000, bank: 15_000_000, fixedAssets: 0, liabilities: 5_000_000, equity: 22_000_000, confirmed: true },
         transactions,
         assets: [{ id: assetId, name: "Mesin kopi espresso", cost: 12_000_000, residual: 0, lifeMonths: 12, startDate: "2026-09-12", account: "cash", opening: false }],
+        customCategories: [],
     };
 }
 function emptyData(ownerName = "Pemilik usaha") {
-    return { version: 1, demo: false, profile: { businessName: "Usaha Saya", ownerName, businessType: "Kuliner" }, opening: { date: today(), cash: 0, bank: 0, fixedAssets: 0, liabilities: 0, equity: 0, confirmed: false }, transactions: [], assets: [] };
+    return { version: 1, demo: false, profile: { businessName: "Usaha Saya", ownerName, businessType: "Kuliner" }, opening: { date: today(), cash: 0, bank: 0, fixedAssets: 0, liabilities: 0, equity: 0, confirmed: false }, transactions: [], assets: [], customCategories: [] };
 }
 function readLocalData() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -650,7 +651,34 @@ function App() {
             <div className="page-content">{renderPage()}</div>
             <footer className="app-footer"><span>RuangUsaha {new Date().getFullYear()} · Asisten keuangan untuk UMKM</span><span>Alat bantu keputusan, bukan pengganti saran akuntan.</span>{demoSession && <button className="panel-link" onClick={handleSignOut}>Keluar dari akun demo</button>}</footer>
         </main>
-        {showForm && <TransactionModal initial={editing} initialAsset={data.assets.find((asset) => asset.id === editing?.assetId)} initialKind={newTransactionKind} onClose={() => { setShowForm(false); setEditing(null); }} onSave={(tx, asset) => { setData((old) => ({ ...old, demo: false, transactions: old.transactions.some((item) => item.id === tx.id) ? old.transactions.map((item) => item.id === tx.id ? tx : item) : [...old.transactions, tx], assets: asset ? old.assets.some((item) => item.id === asset.id) ? old.assets.map((item) => item.id === asset.id ? asset : item) : [...old.assets, asset] : old.assets.filter((item) => item.id !== editing?.assetId) })); setPeriod(monthOf(tx.date)); setShowForm(false); setEditing(null); notify("Transaksi berhasil disimpan."); }} />}
+        {showForm && (
+            <TransactionModal
+                initial={editing}
+                initialAsset={data.assets.find((asset) => asset.id === editing?.assetId)}
+                initialKind={newTransactionKind}
+                customCategories={data.customCategories || []}
+                existingNotes={[...new Set(data.transactions.map((t) => t.note).filter(Boolean))]}
+                onClose={() => { setShowForm(false); setEditing(null); }}
+                onSave={(tx, asset) => {
+                    setData((old) => ({
+                        ...old,
+                        demo: false,
+                        transactions: old.transactions.some((item) => item.id === tx.id)
+                            ? old.transactions.map((item) => item.id === tx.id ? tx : item)
+                            : [tx, ...old.transactions],
+                        assets: asset
+                            ? old.assets.some((item) => item.id === asset.id)
+                                ? old.assets.map((item) => item.id === asset.id ? asset : item)
+                                : [...old.assets, asset]
+                            : old.assets.filter((item) => item.id !== editing?.assetId)
+                    }));
+                    setPeriod(monthOf(tx.date));
+                    setShowForm(false);
+                    setEditing(null);
+                    notify("Transaksi berhasil disimpan.");
+                }}
+            />
+        )}
     </div>;
 }
 
@@ -753,18 +781,33 @@ function TransactionList({ kind, rows, onEdit, onRemove }) {
 function TransactionTypePanel({ kind, rows, total, openTransaction, onEdit, onRemove }) {
     const isRevenue = kind === "revenue";
     return <section className={`panel transaction-type-panel ${isRevenue ? "income" : "expense"}`}>
-        <div className="panel-header"><div><span className="eyebrow">{isRevenue ? "UANG MASUK" : "UANG KELUAR"}</span><h2 className="panel-title section-gap">{isRevenue ? "Pendapatan & penjualan" : "Pengeluaran"}</h2><p className="panel-caption">{monthLabel(rows.period)}</p></div><strong className={`transaction-total ${isRevenue ? "positive" : "negative"}`}>{money(total)}</strong></div>
+        <div className="panel-header">
+            <div>
+                <span className="eyebrow">{isRevenue ? "UANG MASUK" : "UANG KELUAR"}</span>
+                <h2 className="panel-title section-gap">{isRevenue ? "Pendapatan & penjualan" : "Pengeluaran"}</h2>
+                <p className="panel-caption">{monthLabel(rows.period)}</p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+                <strong className={`transaction-total ${isRevenue ? "positive" : "negative"}`}>{money(total)}</strong>
+                <button className="button button-primary" style={{ padding: "0 12px", minHeight: "32px", fontSize: "12px" }} onClick={() => openTransaction(kind)}>
+                    ＋ Catat {isRevenue ? "pendapatan" : "pengeluaran"}
+                </button>
+            </div>
+        </div>
         <TransactionList kind={kind} rows={rows.items} onEdit={onEdit} onRemove={onRemove} />
-        <button className="button button-secondary transaction-add-button" onClick={() => openTransaction(kind)}>＋ Catat {isRevenue ? "pendapatan" : "pengeluaran"}</button>
     </section>;
 }
 function Transactions({ data, setData, period, setPeriod, setEditing, setShowForm, setNewTransactionKind, openTransaction, notify }) {
     const [view, setView] = useState("income-expense");
     const periodRows = data.transactions.filter((tx) => monthOf(tx.date) === period);
-    const incomes = periodRows.filter((tx) => tx.kind === "revenue");
-    const expenses = periodRows.filter((tx) => tx.kind === "expense");
+    
+    // Sort: tanggal lebih besar di atas, jika tanggal sama yang baru dibuat (urutan array awal) tetap di atas
+    const sortTx = (a, b) => b.date.localeCompare(a.date);
+
+    const incomes = periodRows.filter((tx) => tx.kind === "revenue").sort(sortTx);
+    const expenses = periodRows.filter((tx) => tx.kind === "expense").sort(sortTx);
     const selectedKind = view === "income-expense" ? null : view;
-    const selectedRows = selectedKind ? [...periodRows].filter((tx) => tx.kind === selectedKind).sort((a, b) => b.date.localeCompare(a.date)) : [];
+    const selectedRows = selectedKind ? [...periodRows].filter((tx) => tx.kind === selectedKind).sort(sortTx) : [];
     function remove(tx) { if (!window.confirm(`Hapus transaksi "${tx.description}"?`)) return; setData((old) => ({ ...old, transactions: old.transactions.filter((item) => item.id !== tx.id), assets: tx.assetId ? old.assets.filter((asset) => asset.id !== tx.assetId) : old.assets })); notify("Transaksi dihapus."); }
     function exportCsv() { const records = [["Tanggal", "Jenis", "Kategori", "Detail", "Metode", "Akun tujuan", "Nominal", "Catatan"], ...data.transactions.map((tx) => [tx.date, KIND_NAMES[tx.kind], tx.category, tx.kind === "asset" ? tx.description : tx.kind === "transfer" ? `${accountLabel(tx.account)} ke ${accountLabel(tx.transferTo)}` : tx.category, accountLabel(tx.account), tx.transferTo ? accountLabel(tx.transferTo) : "", tx.amount, tx.note || ""])]; const content = `\uFEFF${records.map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\r\n")}`; const url = URL.createObjectURL(new Blob([content], { type: "text/csv;charset=utf-8" })); const link = document.createElement("a"); link.href = url; link.download = "transaksi-ruangusaha.csv"; link.click(); URL.revokeObjectURL(url); }
     function openEdit(tx) { setEditing(tx); setNewTransactionKind(tx.kind); setShowForm(true); }
@@ -897,18 +940,298 @@ function Settings({ data, setData, notify, onSignOut }) {
             <span>Saya sudah memeriksa saldo awal ini</span>
         </label>
         <button className="button button-primary settings-save">Simpan saldo awal</button>
-    </form></div><aside className="report-card-side"><div className="report-card"><h2 className="panel-title">Cash ≠ laba ≠ modal</h2><p className="panel-caption" style={{ lineHeight: 1.8 }}>Setoran modal menambah uang dan ekuitas, bukan pendapatan. Laba dihitung dari pendapatan dikurangi biaya serta penyusutan. Saldo uang berubah juga karena investasi, pinjaman, dan prive.</p></div><div className="settings-note"><strong>Posisi Keuangan Rapi.</strong><br />Saldo awal menjadi acuan untuk menghitung neraca dan arus kas berjalan usahamu.</div></aside></div></>;
+    </form>
+
+    <h2 className="panel-title section-gap">Kategori Turunan Pengeluaran</h2>
+    <p className="panel-caption">Atur semua turunan biaya untuk COGS, OPEX, dan Non-Operasional. Setiap kategori bisa kamu edit namanya (✏️), hapus (×), atau tambah baru.</p>
+    <CategoryManager
+        customCategories={data.customCategories}
+        onAdd={(newCat) => {
+            const currentList = data.customCategories || DEFAULT_EXPENSE_CATEGORIES;
+            setData((old) => ({
+                ...old,
+                customCategories: [...currentList, newCat]
+            }));
+            notify(`Kategori "${newCat.name}" berhasil ditambahkan.`);
+        }}
+        onEdit={(oldName, updatedName) => {
+            const currentList = data.customCategories || DEFAULT_EXPENSE_CATEGORIES;
+            setData((old) => ({
+                ...old,
+                customCategories: currentList.map((c) =>
+                    c.name === oldName ? { ...c, name: updatedName } : c
+                ),
+                transactions: old.transactions.map((tx) =>
+                    tx.category === oldName ? { ...tx, category: updatedName } : tx
+                )
+            }));
+            notify(`Kategori "${oldName}" diubah menjadi "${updatedName}".`);
+        }}
+        onDelete={(catName) => {
+            if (!window.confirm(`Hapus kategori turunan "${catName}"?`)) return;
+            const currentList = data.customCategories || DEFAULT_EXPENSE_CATEGORIES;
+            setData((old) => ({
+                ...old,
+                customCategories: currentList.filter((c) => c.name !== catName)
+            }));
+            notify(`Kategori "${catName}" dihapus.`);
+        }}
+    />
+    </div><aside className="report-card-side"><div className="report-card"><h2 className="panel-title">Cash ≠ laba ≠ modal</h2><p className="panel-caption" style={{ lineHeight: 1.8 }}>Setoran modal menambah uang dan ekuitas, bukan pendapatan. Laba dihitung dari pendapatan dikurangi biaya serta penyusutan. Saldo uang berubah juga karena investasi, pinjaman, dan prive.</p></div><div className="settings-note"><strong>Posisi Keuangan Rapi.</strong><br />Saldo awal menjadi acuan untuk menghitung neraca dan arus kas berjalan usahamu.</div></aside></div></>;
 }
-function TransactionModal({ initial, initialAsset, initialKind, onClose, onSave }) {
+
+const DEFAULT_EXPENSE_CATEGORIES = [
+    { id: "def-1", name: "COGS / HPP", parent: "cogs", kind: "expense" },
+    { id: "def-2", name: "Beban Pegawai (HR/Payroll)", parent: "opex", kind: "expense" },
+    { id: "def-3", name: "Beban Utilitas & Tempat", parent: "opex", kind: "expense" },
+    { id: "def-4", name: "Beban Operasional & Umum", parent: "opex", kind: "expense" },
+    { id: "def-5", name: "Beban Pemasaran (Marketing/Selling)", parent: "opex", kind: "expense" },
+    { id: "def-6", name: "Beban Pemeliharaan", parent: "opex", kind: "expense" },
+    { id: "def-7", name: "Beban non-operasional", parent: "non_ops", kind: "expense" },
+];
+
+function CategoryManager({ customCategories, onAdd, onEdit, onDelete }) {
+    const [parent, setParent] = useState("cogs");
+    const [name, setName] = useState("");
+    const [editingItem, setEditingItem] = useState(null);
+    const [editingName, setEditingName] = useState("");
+
+    const activeList = customCategories || DEFAULT_EXPENSE_CATEGORIES;
+
+    const parentGroups = [
+        { id: "cogs", label: "📦 COGS / HPP", fullName: "Harga Pokok Penjualan", desc: "Biaya langsung pembuatan produk (marketlist bar, kitchen, kemasan)" },
+        { id: "opex", label: "🏢 OPEX", fullName: "Beban Operasional Usaha", desc: "Biaya operasional berjalan (gas, listrik, gaji, iklan, supplies, R&D)" },
+        { id: "non_ops", label: "⚡ Non-Operasional", fullName: "Beban Non-Operasional", desc: "Biaya administrasi bank, denda, kerugian non-pokok" },
+    ];
+
+    function handleAdd(e) {
+        e.preventDefault();
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        if (activeList.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+            alert("Kategori dengan nama tersebut sudah ada!");
+            return;
+        }
+        onAdd({ id: id(), name: trimmed, kind: "expense", parent });
+        setName("");
+    }
+
+    function startEdit(cat) {
+        setEditingItem(cat.name);
+        setEditingName(cat.name);
+    }
+
+    function saveEdit(oldName) {
+        const trimmed = editingName.trim();
+        if (!trimmed) {
+            setEditingItem(null);
+            return;
+        }
+        if (trimmed.toLowerCase() !== oldName.toLowerCase() && activeList.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+            alert("Nama kategori sudah digunakan!");
+            return;
+        }
+        onEdit(oldName, trimmed);
+        setEditingItem(null);
+    }
+
+    return <div className="custom-categories-box" style={{ marginTop: 14 }}>
+        {/* Form Input: Kiri Pilih Pilar, Kanan Nama Turunan */}
+        <form onSubmit={handleAdd} style={{ display: "grid", gridTemplateColumns: "1.2fr 1.6fr auto", gap: 12, alignItems: "flex-end", marginBottom: 22, background: "#f8faf7", padding: "14px 16px", borderRadius: 12, border: "1.5px dashed #dbe5d8" }}>
+            <label className="field" style={{ margin: 0 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#36463a" }}>1. Pilih Pilar Utama</span>
+                <select
+                    className="period-select"
+                    style={{ width: "100%", padding: "9px 34px 9px 12px" }}
+                    value={parent}
+                    onChange={(e) => setParent(e.target.value)}
+                >
+                    {parentGroups.map((group) => <option key={group.id} value={group.id}>{group.label}</option>)}
+                </select>
+            </label>
+            <label className="field" style={{ margin: 0 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#36463a" }}>2. Nama Kategori Turunan</span>
+                <input
+                    className="input-control"
+                    style={{ width: "100%", padding: "8px 12px", minHeight: 38 }}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Contoh: Gas, Marketlist Bar, R&D..."
+                    required
+                />
+            </label>
+            <button className="button button-primary" type="submit" style={{ height: 38, padding: "0 18px", whiteSpace: "nowrap" }}>
+                ＋ Tambah
+            </button>
+        </form>
+
+        {/* Daftar Turunan Rapi Per Pilar */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {parentGroups.map((group) => {
+                const items = activeList.filter((c) => c.parent === group.id);
+
+                return (
+                    <div key={group.id} style={{ background: "#ffffff", border: "1.5px solid #e3eae0", borderRadius: 12, padding: "16px 18px", boxShadow: "0 2px 5px rgba(0,0,0,0.02)" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, paddingBottom: 10, borderBottom: "1px solid #edf2eb" }}>
+                            <div>
+                                <strong style={{ fontSize: 14, color: "#1c2e22" }}>{group.label}</strong>
+                                <span style={{ color: "#778579", fontSize: 12, marginLeft: 8 }}>({group.fullName})</span>
+                            </div>
+                            <span style={{ fontSize: 11.5, color: "#477051", background: "#edf5ed", padding: "3px 8px", borderRadius: 20, fontWeight: 600 }}>
+                                {items.length} turunan aktif
+                            </span>
+                        </div>
+                        
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                            {items.length === 0 ? (
+                                <span style={{ color: "#95a397", fontSize: "12.5px", fontStyle: "italic", padding: "4px 0" }}>
+                                    Belum ada kategori turunan di pilar ini.
+                                </span>
+                            ) : (
+                                items.map((cat) => (
+                                    <div
+                                        key={cat.id || cat.name}
+                                        style={{
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: 8,
+                                            padding: "6px 12px",
+                                            background: "#fbfdfa",
+                                            border: "1.5px solid #d4ded2",
+                                            borderRadius: 9,
+                                            fontSize: "13px",
+                                            boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                                        }}
+                                    >
+                                        {editingItem === cat.name ? (
+                                            <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                                                <input
+                                                    className="input-control"
+                                                    style={{ padding: "3px 8px", fontSize: 12, minHeight: 28, width: 140 }}
+                                                    value={editingName}
+                                                    autoFocus
+                                                    onChange={(e) => setEditingName(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter") saveEdit(cat.name);
+                                                        if (e.key === "Escape") setEditingItem(null);
+                                                    }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => saveEdit(cat.name)}
+                                                    style={{ border: "none", background: "#2e7654", color: "#fff", borderRadius: 4, padding: "3px 8px", fontSize: 11, cursor: "pointer", fontWeight: 700 }}
+                                                >
+                                                    Simpan
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditingItem(null)}
+                                                    style={{ border: "none", background: "#e0e6de", color: "#475449", borderRadius: 4, padding: "3px 6px", fontSize: 11, cursor: "pointer" }}
+                                                >
+                                                    Batal
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <span style={{ fontWeight: 600, color: "#192c1f" }}>{cat.name}</span>
+                                                <div style={{ display: "inline-flex", alignItems: "center", gap: 4, marginLeft: 2 }}>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => startEdit(cat)}
+                                                        style={{ border: "none", background: "none", color: "#457655", cursor: "pointer", fontSize: 12, padding: "2px" }}
+                                                        title="Ubah nama turunan ini"
+                                                    >
+                                                        ✏️
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onDelete(cat.name)}
+                                                        style={{ border: "none", background: "none", color: "#bc4f47", cursor: "pointer", fontWeight: "bold", fontSize: 15, padding: "0 2px" }}
+                                                        title="Hapus turunan ini"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    </div>;
+}
+
+function TransactionModal({ initial, initialAsset, initialKind, customCategories = [], existingNotes = [], onClose, onSave }) {
     const [kind, setKind] = useState(initial?.kind || initialKind || "revenue");
-    const [category, setCategory] = useState(initial?.category || CATEGORIES[initial?.kind || initialKind || "revenue"][0]);
+    
+    // Kelompokkan kategori untuk opsi dropdown
+    const groupedExpenseCategories = useMemo(() => {
+        const baseCogs = ["COGS / HPP"];
+        const extraCogs = customCategories.filter((c) => c.parent === "cogs").map((c) => c.name);
+
+        const baseOpex = [
+            "Beban Pegawai (HR/Payroll)",
+            "Beban Utilitas & Tempat",
+            "Beban Operasional & Umum",
+            "Beban Pemasaran (Marketing/Selling)",
+            "Beban Pemeliharaan",
+        ];
+        const extraOpex = customCategories.filter((c) => c.parent === "opex" || (!["cogs", "non_ops"].includes(c.parent) && (c.kind || "expense") === "expense")).map((c) => c.name);
+
+        const baseNonOps = ["Beban non-operasional"];
+        const extraNonOps = customCategories.filter((c) => c.parent === "non_ops").map((c) => c.name);
+
+        return [
+            { label: "📦 COGS / HPP", items: [...new Set([...baseCogs, ...extraCogs])] },
+            { label: "🏢 Beban Operasional (OPEX)", items: [...new Set([...baseOpex, ...extraOpex])] },
+            { label: "⚡ Non-Operasional", items: [...new Set([...baseNonOps, ...extraNonOps])] },
+        ];
+    }, [customCategories]);
+
+    const flatCategories = useMemo(() => {
+        if (kind === "expense") {
+            return groupedExpenseCategories.flatMap((g) => g.items);
+        }
+        const base = CATEGORIES[kind] || [];
+        const extra = customCategories.filter((c) => c.kind === kind).map((c) => c.name);
+        return [...new Set([...base, ...extra])];
+    }, [kind, groupedExpenseCategories, customCategories]);
+
+    const [category, setCategory] = useState(initial?.category || flatCategories[0] || "COGS / HPP");
     const [account, setAccount] = useState(initial?.account || "cash");
     const [transferTo, setTransferTo] = useState(initial?.transferTo || (initial?.account === "bank" ? "cash" : "bank"));
     const [error, setError] = useState("");
+
+    // Sinkronkan kategori jika kind berubah
+    useEffect(() => {
+        if (!initial && !flatCategories.includes(category)) {
+            setCategory(flatCategories[0] || "");
+        }
+    }, [kind, flatCategories]);
+
     function submit(event) { event.preventDefault(); const form = new FormData(event.currentTarget); const amount = Number(form.get("amount")); if (!Number.isSafeInteger(amount) || amount <= 0) { setError("Nominal harus berupa bilangan bulat rupiah yang lebih besar dari nol."); return; } if (kind === "transfer" && account === transferTo) { setError("Akun asal dan tujuan harus berbeda."); return; } const lifeMonths = Number(form.get("lifeMonths")); const residual = Number(form.get("residual")); if (kind === "asset" && (!Number.isSafeInteger(lifeMonths) || lifeMonths <= 0 || !Number.isSafeInteger(residual) || residual < 0 || residual > amount)) { setError("Umur manfaat harus bilangan bulat lebih dari nol dan nilai residu tidak boleh melebihi harga aset."); return; } const assetId = kind === "asset" ? (initial?.assetId || id()) : undefined; const assetName = kind === "asset" ? String(form.get("assetName")).trim() : ""; const description = kind === "asset" ? assetName : kind === "transfer" ? `${accountLabel(account)} ke ${accountLabel(transferTo)}` : category; const tx = { id: initial?.id || id(), date: String(form.get("date")), description, kind, category, amount, account, note: String(form.get("note") || "").trim(), ...(kind === "transfer" ? { transferTo } : {}), ...(assetId ? { assetId } : {}) }; const asset = kind === "asset" ? { id: assetId, name: assetName, cost: amount, residual, lifeMonths, startDate: tx.date, account, opening: false } : null; onSave(tx, asset); }
     const hint = { revenue: "Pendapatan menambah saldo dan pendapatan usaha. Setoran modal bukan pendapatan.", expense: "Pengeluaran masuk ke laporan laba rugi sesuai kategori.", capital: "Setoran modal menambah saldo dan ekuitas, bukan pendapatan atau laba.", loan: "Pinjaman masuk menambah saldo dan utang, bukan pendapatan usaha.", draw: "Prive mengurangi saldo dan ekuitas, bukan beban operasional.", principal: "Pembayaran pokok pinjaman mengurangi saldo dan utang, bukan beban laba rugi.", transfer: "Perpindahan saldo mengurangi akun asal dan menambah akun tujuan. Total uang dan laba tidak berubah." };
     const accountOptions = <><option value="cash">Cash</option><option value="bank">Rekening</option></>;
-    return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-box" role="dialog" aria-modal="true" aria-labelledby="transaction-title"><div className="modal-heading"><div><span className="eyebrow">{KIND_NAMES[kind].toLocaleUpperCase("id-ID")}</span><h2 id="transaction-title">{initial ? `Ubah ${KIND_NAMES[kind].toLocaleLowerCase("id-ID")}` : `Tambah ${KIND_NAMES[kind].toLocaleLowerCase("id-ID")}`}</h2></div><button className="modal-close" onClick={onClose} aria-label="Tutup">×</button></div><form onSubmit={submit}><div className="form-grid">{kind === "asset" && <label className="field field-wide"><span>Nama aset</span><input name="assetName" defaultValue={initialAsset?.name || initial?.description} required maxLength="90" placeholder="Contoh: Mesin produksi" /></label>}{kind !== "transfer" && <label className="field"><span>Kategori</span><select name="category" value={category} onChange={(event) => setCategory(event.target.value)}>{CATEGORIES[kind].map((item) => <option key={item}>{item}</option>)}</select></label>}<label className="field"><span>Nominal (Rp)</span><input name="amount" type="number" min="1" step="1" defaultValue={initial?.amount} required /></label><label className="field"><span>Tanggal</span><input name="date" type="date" defaultValue={initial?.date || today()} required /></label><label className="field"><span>{kind === "transfer" ? "Dari akun" : "Metode penerimaan / pembayaran"}</span><select name="account" value={account} onChange={(event) => { setAccount(event.target.value); if (kind === "transfer") setTransferTo(event.target.value === "cash" ? "bank" : "cash"); }}>{accountOptions}</select></label>{kind === "transfer" && <label className="field"><span>Ke akun</span><select value={transferTo} onChange={(event) => setTransferTo(event.target.value)}>{accountOptions}</select></label>}{kind === "asset" && <><label className="field"><span>Umur manfaat (bulan)</span><input name="lifeMonths" type="number" min="1" step="1" defaultValue={initialAsset?.lifeMonths || 12} required /></label><label className="field"><span>Nilai residu (Rp)</span><input name="residual" type="number" min="0" step="1" defaultValue={initialAsset?.residual || 0} required /></label></>}<label className="field field-wide"><span>Catatan</span><textarea name="note" rows="2" defaultValue={initial?.note} placeholder="Tulis detail tambahan, misalnya dari mana atau untuk keperluan apa." /></label></div><div className="form-hint">{hint[kind]}</div>{error && <div className="notice-error">{error}</div>}<div className="modal-actions"><button type="button" className="button button-quiet" onClick={onClose}>Batal</button><button className="button button-primary">Simpan catatan</button></div></form></section></div>;
+    return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-box" role="dialog" aria-modal="true" aria-labelledby="transaction-title"><div className="modal-heading"><div><span className="eyebrow">{KIND_NAMES[kind].toLocaleUpperCase("id-ID")}</span><h2 id="transaction-title">{initial ? `Ubah ${KIND_NAMES[kind].toLocaleLowerCase("id-ID")}` : `Tambah ${KIND_NAMES[kind].toLocaleLowerCase("id-ID")}`}</h2></div><button className="modal-close" onClick={onClose} aria-label="Tutup">×</button></div><form onSubmit={submit}><div className="form-grid">{kind === "asset" && <label className="field field-wide"><span>Nama aset</span><input name="assetName" defaultValue={initialAsset?.name || initial?.description} required maxLength="90" placeholder="Contoh: Mesin produksi" /></label>}{kind !== "transfer" && <label className="field"><span>Kategori</span><select name="category" value={category} onChange={(event) => setCategory(event.target.value)}>{kind === "expense" ? groupedExpenseCategories.map((group) => <optgroup key={group.label} label={group.label}>{group.items.map((item) => <option key={item} value={item}>{item}</option>)}</optgroup>) : flatCategories.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>}<label className="field"><span>Nominal (Rp)</span><input name="amount" type="number" min="1" step="1" defaultValue={initial?.amount} required /></label><label className="field"><span>Tanggal</span><input name="date" type="date" defaultValue={initial?.date || today()} required /></label><label className="field"><span>{kind === "transfer" ? "Dari akun" : "Metode penerimaan / pembayaran"}</span><select name="account" value={account} onChange={(event) => { setAccount(event.target.value); if (kind === "transfer") setTransferTo(event.target.value === "cash" ? "bank" : "cash"); }}>{accountOptions}</select></label>{kind === "transfer" && <label className="field"><span>Ke akun</span><select value={transferTo} onChange={(event) => setTransferTo(event.target.value)}>{accountOptions}</select></label>}{kind === "asset" && <><label className="field"><span>Umur manfaat (bulan)</span><input name="lifeMonths" type="number" min="1" step="1" defaultValue={initialAsset?.lifeMonths || 12} required /></label><label className="field"><span>Nilai residu (Rp)</span><input name="residual" type="number" min="0" step="1" defaultValue={initialAsset?.residual || 0} required /></label></>}
+    <label className="field field-wide">
+        <span>Catatan</span>
+        <input
+            list="note-suggestions"
+            name="note"
+            className="input-control"
+            defaultValue={initial?.note || ""}
+            placeholder="Ketik catatan (contoh: ayam fillet, minyak goreng...)"
+            autoComplete="off"
+        />
+        <datalist id="note-suggestions">
+            {existingNotes.map((item) => <option key={item} value={item} />)}
+        </datalist>
+    </label>
+    </div><div className="form-hint">{hint[kind]}</div>{error && <div className="notice-error">{error}</div>}<div className="modal-actions"><button type="button" className="button button-quiet" onClick={onClose}>Batal</button><button className="button button-primary">Simpan catatan</button></div></form></section></div>;
 }
 function AuthPage({ mode, setMode, onSubmit, error, message, submitting, onDemo }) {
     function submit(event) {

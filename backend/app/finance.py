@@ -57,12 +57,20 @@ class FinanceAsset(BaseModel):
     opening: bool = False
 
 
+class CustomCategory(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    name: str
+    parent: str
+    kind: str = "expense"
+
+
 class FinanceWorkspace(BaseModel):
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     opening: FinanceOpening
     transactions: list[FinanceTransaction] = Field(max_length=100_000)
     assets: list[FinanceAsset] = Field(default_factory=list, max_length=10_000)
+    custom_categories: list[CustomCategory] = Field(default_factory=list, alias="customCategories")
 
 
 def _month_number(month: str) -> int:
@@ -149,21 +157,64 @@ def _is_marketing(tx: FinanceTransaction) -> bool:
 
 def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
     rows = [transaction for transaction in workspace.transactions if transaction.date.strftime("%Y-%m") == month]
-    revenue = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category != "Pendapatan non-operasional")
-    cogs = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "COGS / HPP" or tx.category.startswith("COGS")))
+    
+    # Custom category mapping support: category_name -> parent_group
+    custom_map: dict[str, str] = {}
+    if hasattr(workspace, "custom_categories") and workspace.custom_categories:
+        for cat in workspace.custom_categories:
+            if isinstance(cat, dict):
+                custom_map[cat.get("name", "")] = cat.get("parent", "")
+            elif hasattr(cat, "name") and hasattr(cat, "parent"):
+                custom_map[cat.name] = cat.parent
+
+    def match_cat(tx: FinanceTransaction, target_parent: str) -> bool:
+        return custom_map.get(tx.category) == target_parent
+
+    revenue = _amount(
+        rows,
+        lambda tx: tx.kind == "revenue" and tx.category != "Pendapatan non-operasional" and custom_map.get(tx.category) != "non_operating_income"
+    )
+    cogs = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == "COGS / HPP" or tx.category.startswith("COGS") or match_cat(tx, "cogs"))
+    )
     
     # 5 Sub-kategori OPEX
-    payroll = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["payroll"] or tx.category.startswith("Beban Pegawai")))
-    utilities = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["utilities"] or tx.category.startswith("Beban Utilitas")))
-    operational = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["operational"] or tx.category.startswith("Beban Operasional")))
-    marketing = _amount(rows, _is_marketing)
-    maintenance = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["maintenance"] or tx.category.startswith("Beban Pemeliharaan")))
-    general_opex = _amount(rows, lambda tx: tx.kind == "expense" and tx.category == "OPEX")
+    payroll = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["payroll"] or tx.category.startswith("Beban Pegawai") or match_cat(tx, "payroll"))
+    )
+    utilities = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["utilities"] or tx.category.startswith("Beban Utilitas") or match_cat(tx, "utilities"))
+    )
+    operational = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["operational"] or tx.category.startswith("Beban Operasional") or match_cat(tx, "operational"))
+    )
+    marketing = _amount(
+        rows,
+        lambda tx: _is_marketing(tx) or (tx.kind == "expense" and match_cat(tx, "marketing"))
+    )
+    maintenance = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == OPEX_SUBCATEGORIES["maintenance"] or tx.category.startswith("Beban Pemeliharaan") or match_cat(tx, "maintenance"))
+    )
+    general_opex = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == "OPEX" or match_cat(tx, "general_opex"))
+    )
     
     # Total OPEX mencakup semua 5 sub-kategori OPEX
     opex = payroll + utilities + operational + marketing + maintenance + general_opex
-    non_operating_income = _amount(rows, lambda tx: tx.kind == "revenue" and tx.category == "Pendapatan non-operasional")
-    non_operating_expense = _amount(rows, lambda tx: tx.kind == "expense" and (tx.category == "Beban non-operasional" or tx.category.startswith("Beban non-operasional")))
+    non_operating_income = _amount(
+        rows,
+        lambda tx: tx.kind == "revenue" and (tx.category == "Pendapatan non-operasional" or match_cat(tx, "non_operating_income"))
+    )
+    non_operating_expense = _amount(
+        rows,
+        lambda tx: tx.kind == "expense" and (tx.category == "Beban non-operasional" or tx.category.startswith("Beban non-operasional") or match_cat(tx, "non_operating_expense"))
+    )
     depreciation = _monthly_depreciation(workspace.assets, month)
     gross_profit = revenue - cogs
     net_profit = gross_profit - opex - depreciation + non_operating_income - non_operating_expense
