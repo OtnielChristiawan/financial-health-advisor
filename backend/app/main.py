@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .finance import FinanceWorkspace, build_financial_report
-from .reasoning import JAVA_VERSION, analyze
+from .reasoning import JAVA_VERSION, analyze, diagnose_finance
 
 
 class Movement(BaseModel):
@@ -88,7 +88,19 @@ def health() -> dict[str, Any]:
 @app.post("/api/reports")
 def financial_report(request: FinancialReportRequest) -> dict[str, Any]:
     try:
-        return build_financial_report(request.workspace, request.month)
+        report_data = build_financial_report(request.workspace, request.month)
+        diagnosis = diagnose_finance(report_data["report"])
+        report_data["diagnosis"] = diagnosis
+        return report_data
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@app.post("/api/diagnose")
+def diagnose_financial_report(request: FinancialReportRequest) -> dict[str, Any]:
+    try:
+        report_data = build_financial_report(request.workspace, request.month)
+        return diagnose_finance(report_data["report"])
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 
@@ -99,3 +111,4 @@ def analyze_financial_state(request: AnalyzeRequest) -> dict[str, Any]:
         return analyze(request.model_dump())
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
+
