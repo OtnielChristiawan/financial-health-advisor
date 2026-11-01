@@ -175,6 +175,30 @@ class FinancialReportTests(unittest.TestCase):
         self.assertIn(450_000, [rep["opex"], rep["opexBreakdown"]["general"]])
         self.assertEqual(rep["balanceDifference"], 0)
 
+    def test_custom_category_keywords_classified_properly(self) -> None:
+        """Verifies that OPEX categories (even with generic parent='opex') are classified to correct subcategories."""
+        workspace = workspace_fixture()
+        workspace["customCategories"] = [
+            {"id": "c1", "name": "Listrik Toko", "parent": "opex", "kind": "expense"},
+            {"id": "c2", "name": "Iklan IG Ads", "parent": "opex", "kind": "expense"},
+            {"id": "c3", "name": "Gaji Barista Tambahan", "parent": "opex", "kind": "expense"},
+            {"id": "c4", "name": "Servis Grinder", "parent": "opex", "kind": "expense"},
+            {"id": "c5", "name": "RnD Rasa Baru", "parent": "opex", "kind": "expense"},
+        ]
+        workspace["transactions"].extend([
+            {"id": "tx1", "date": "2026-09-10", "description": "Listrik", "kind": "expense", "category": "Listrik Toko", "amount": 500_000, "account": "cash"},
+            {"id": "tx2", "date": "2026-09-10", "description": "Iklan", "kind": "expense", "category": "Iklan IG Ads", "amount": 200_000, "account": "cash"},
+            {"id": "tx3", "date": "2026-09-10", "description": "Gaji", "kind": "expense", "category": "Gaji Barista Tambahan", "amount": 800_000, "account": "cash"},
+            {"id": "tx4", "date": "2026-09-10", "description": "Servis", "kind": "expense", "category": "Servis Grinder", "amount": 150_000, "account": "cash"},
+            {"id": "tx5", "date": "2026-09-10", "description": "RnD", "kind": "expense", "category": "RnD Rasa Baru", "amount": 300_000, "account": "cash"},
+        ])
+        rep = build_financial_report(FinanceWorkspace.model_validate(workspace), "2026-09")["report"]
+        self.assertEqual(rep["opexBreakdown"]["utilities"], 500_000)
+        self.assertEqual(rep["marketing"], 200_000)
+        self.assertEqual(rep["opexBreakdown"]["payroll"], 800_000)
+        self.assertEqual(rep["opexBreakdown"]["maintenance"], 150_000)
+        self.assertEqual(rep["opexBreakdown"]["general"], 300_000)
+
     def test_periodic_inventory_cogs_calculation(self) -> None:
         """
         Beginning Inventory = Rp3,000,000.

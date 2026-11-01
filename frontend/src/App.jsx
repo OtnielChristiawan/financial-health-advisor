@@ -1302,7 +1302,31 @@ function Reports({ data, report, period, setPeriod, months, tab, setTab }) {
 
 function IncomeReport({ report: r }) {
     const ob = r.opexBreakdown || {};
-    const hasBreakdown = Boolean(ob.payroll || ob.utilities || ob.operational || ob.maintenance || ob.general);
+    const [viewMode, setViewMode] = useState("detailed");
+
+    const customCategoryTotals = useMemo(() => {
+        if (!r?.rows) return [];
+        const isCogs = (c) => {
+            const lower = (c || "").toLowerCase();
+            return lower.includes("cogs") || lower.includes("bahan baku") || lower.includes("hpp") || lower.includes("pembelian bahan");
+        };
+        const isNonOps = (c) => (c || "").toLowerCase().includes("non-operasional");
+
+        const map = {};
+        for (const tx of r.rows) {
+            if (tx.kind === "expense" && !isCogs(tx.category) && !isNonOps(tx.category)) {
+                const cat = tx.category || "Beban Operasional Lainnya";
+                map[cat] = (map[cat] || 0) + Number(tx.amount || 0);
+            }
+        }
+        return Object.entries(map)
+            .map(([name, amount]) => ({ name, amount }))
+            .sort((a, b) => b.amount - a.amount);
+    }, [r?.rows]);
+
+    const hasStandardBreakdown = Boolean(ob.payroll || ob.utilities || ob.operational || ob.maintenance || ob.general);
+    const hasDetailedBreakdown = customCategoryTotals.length > 0;
+    const isDetailed = viewMode === "detailed" && hasDetailedBreakdown;
 
     return <>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -1312,23 +1336,67 @@ function IncomeReport({ report: r }) {
             </span>
         </div>
         <h2 style={{ marginTop: 2 }}>Laporan laba rugi</h2>
-        <p className="panel-caption">{monthLabel(r.month)} · SAK EMKM (Metode Periodik)</p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginTop: 4, marginBottom: 8 }}>
+            <p className="panel-caption" style={{ margin: 0 }}>
+                {monthLabel(r.month)} · {isDetailed ? "Rincian Kategori Kustom" : "SAK EMKM (Metode Periodik)"}
+            </p>
+            <div style={{ display: "inline-flex", gap: 4, background: "#f0f4f0", padding: 3, borderRadius: 8, fontSize: 11 }}>
+                <button
+                    type="button"
+                    onClick={() => setViewMode("detailed")}
+                    style={{
+                        padding: "3px 9px",
+                        border: "none",
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        background: viewMode === "detailed" ? "#ffffff" : "transparent",
+                        color: viewMode === "detailed" ? "#2d4a34" : "#6f7e71",
+                        fontWeight: viewMode === "detailed" ? 700 : 500,
+                        boxShadow: viewMode === "detailed" ? "0 1px 3px rgba(0,0,0,0.12)" : "none",
+                    }}
+                >
+                    📋 Kategori Turunan ({customCategoryTotals.length})
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setViewMode("standard")}
+                    style={{
+                        padding: "3px 9px",
+                        border: "none",
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        background: viewMode === "standard" ? "#ffffff" : "transparent",
+                        color: viewMode === "standard" ? "#2d4a34" : "#6f7e71",
+                        fontWeight: viewMode === "standard" ? 700 : 500,
+                        boxShadow: viewMode === "standard" ? "0 1px 3px rgba(0,0,0,0.12)" : "none",
+                    }}
+                >
+                    🏢 Standar SAK EMKM
+                </button>
+            </div>
+        </div>
         <table className="report-table">
             <tbody>
                 <ReportRow label="Pendapatan (Penjualan)" value={r.revenue} subtotal />
                 <ReportRow label="− HPP (Pemakaian Bahan Baku)*" value={r.cogs} indent />
                 <ReportRow label="Laba kotor (Gross Profit)" value={r.grossProfit} total />
-                <ReportRow label="− Total Beban Operasional (OPEX)" value={r.opex} indent subtotal={hasBreakdown} />
-                {hasBreakdown && (
-                    <>
-                        <ReportRow label="• Beban Pegawai (HR/Payroll)" value={ob.payroll || 0} indentLevel={2} />
-                        <ReportRow label="• Beban Utilitas & Tempat" value={ob.utilities || 0} indentLevel={2} />
-                        <ReportRow label="• Beban Operasional & Umum" value={ob.operational || 0} indentLevel={2} />
-                        <ReportRow label="• Beban Pemeliharaan" value={ob.maintenance || 0} indentLevel={2} />
-                        {Boolean(ob.general) && <ReportRow label="• Beban Operasional Lainnya" value={ob.general} indentLevel={2} />}
-                    </>
+                <ReportRow label="− Total Beban Operasional (OPEX)" value={r.opex} indent subtotal={isDetailed || hasStandardBreakdown} />
+                {isDetailed ? (
+                    customCategoryTotals.map((item) => (
+                        <ReportRow key={item.name} label={`• ${item.name}`} value={item.amount} indentLevel={2} />
+                    ))
+                ) : (
+                    hasStandardBreakdown && (
+                        <>
+                            <ReportRow label="• Beban Pegawai (HR/Payroll)" value={ob.payroll || 0} indentLevel={2} />
+                            <ReportRow label="• Beban Utilitas & Tempat" value={ob.utilities || 0} indentLevel={2} />
+                            <ReportRow label="• Beban Operasional & Umum" value={ob.operational || 0} indentLevel={2} />
+                            <ReportRow label="• Beban Pemeliharaan" value={ob.maintenance || 0} indentLevel={2} />
+                            {Boolean(ob.general) && <ReportRow label="• Beban Operasional Lainnya" value={ob.general} indentLevel={2} />}
+                        </>
+                    )
                 )}
-                <ReportRow label="− Beban Pemasaran (Marketing/Selling)" value={r.marketing} indent />
+                {!isDetailed && <ReportRow label="− Beban Pemasaran (Marketing/Selling)" value={r.marketing} indent />}
                 <ReportRow label="− Penyusutan aset tetap" value={r.depreciation} indent />
                 <ReportRow label="Laba operasional" value={r.operatingProfit} subtotal />
                 <ReportRow label="+ Pendapatan non-operasional" value={r.nonOperatingIncome} indent />
@@ -1876,9 +1944,10 @@ function TransactionModal({ initial, initialAsset, initialKind, customCategories
     const [kind, setKind] = useState(initial?.kind || initialKind || "revenue");
 
     const groupedExpenseCategories = useMemo(() => {
-        const baseCogs = ["Pembelian Bahan Baku", "COGS / HPP"];
         const extraCogs = customCategories.filter((c) => c.parent === "cogs").map((c) => c.name);
+        const cogsItems = extraCogs.length > 0 ? extraCogs : ["Pembelian Bahan Baku", "COGS / HPP"];
 
+        const extraOpex = customCategories.filter((c) => c.parent === "opex" || (!["cogs", "non_ops"].includes(c.parent) && (c.kind || "expense") === "expense")).map((c) => c.name);
         const baseOpex = [
             "Beban Pegawai (HR/Payroll)",
             "Beban Utilitas & Tempat",
@@ -1886,15 +1955,15 @@ function TransactionModal({ initial, initialAsset, initialKind, customCategories
             "Beban Pemasaran (Marketing/Selling)",
             "Beban Pemeliharaan",
         ];
-        const extraOpex = customCategories.filter((c) => c.parent === "opex" || (!["cogs", "non_ops"].includes(c.parent) && (c.kind || "expense") === "expense")).map((c) => c.name);
+        const opexItems = extraOpex.length > 0 ? extraOpex : baseOpex;
 
-        const baseNonOps = ["Beban non-operasional"];
         const extraNonOps = customCategories.filter((c) => c.parent === "non_ops").map((c) => c.name);
+        const nonOpsItems = extraNonOps.length > 0 ? extraNonOps : ["Beban non-operasional"];
 
         return [
-            { label: "📦 Pembelian Bahan Baku (COGS / HPP)", items: [...new Set([...baseCogs, ...extraCogs])] },
-            { label: "🏢 Beban Operasional (OPEX)", items: [...new Set([...baseOpex, ...extraOpex])] },
-            { label: "⚡ Beban Non-Operasional", items: [...new Set([...baseNonOps, ...extraNonOps])] },
+            { label: "📦 Pembelian Bahan Baku (COGS / HPP)", items: [...new Set(cogsItems)] },
+            { label: "🏢 Beban Operasional (OPEX)", items: [...new Set(opexItems)] },
+            { label: "⚡ Beban Non-Operasional", items: [...new Set(nonOpsItems)] },
         ];
     }, [customCategories]);
 

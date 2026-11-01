@@ -215,24 +215,86 @@ def _classify_expense(tx: FinanceTransaction, custom_map: dict[str, str]) -> str
     if parent:
         if parent in ("cogs", "payroll", "utilities", "operational", "marketing", "maintenance", "non_operating_expense"):
             return parent
-        if parent in ("opex", "general_opex", "ops"):
-            return "general_opex"
         if parent in ("non_ops", "non_operating"):
             return "non_operating_expense"
 
     cat = tx.category
+    cat_lower = cat.lower()
+
     if cat == "Beban non-operasional" or cat.startswith("Beban non-operasional"):
         return "non_operating_expense"
-    if cat in MARKETING_CATEGORIES or cat.startswith("Beban Pemasaran") or cat.startswith("Marketing"):
+
+    if (
+        cat in MARKETING_CATEGORIES
+        or cat.startswith("Beban Pemasaran")
+        or "marketing" in cat_lower
+        or "pemasaran" in cat_lower
+        or "iklan" in cat_lower
+        or "promo" in cat_lower
+        or "endorse" in cat_lower
+        or "ads" in cat_lower
+    ):
         return "marketing"
-    if cat == OPEX_SUBCATEGORIES["payroll"] or cat.startswith("Beban Pegawai") or cat.startswith("Gaji"):
+
+    if (
+        cat == OPEX_SUBCATEGORIES["payroll"]
+        or cat.startswith("Beban Pegawai")
+        or "payroll" in cat_lower
+        or "pegawai" in cat_lower
+        or "gaji" in cat_lower
+        or "upah" in cat_lower
+        or "barista" in cat_lower
+        or "karyawan" in cat_lower
+        or "salary" in cat_lower
+        or "wage" in cat_lower
+    ):
         return "payroll"
-    if cat == OPEX_SUBCATEGORIES["utilities"] or cat.startswith("Beban Utilitas") or cat.startswith("Listrik"):
+
+    if (
+        cat == OPEX_SUBCATEGORIES["utilities"]
+        or cat.startswith("Beban Utilitas")
+        or "utilitas" in cat_lower
+        or "listrik" in cat_lower
+        or "electricity" in cat_lower
+        or "electric" in cat_lower
+        or "power" in cat_lower
+        or "air" in cat_lower
+        or "water" in cat_lower
+        or "pdam" in cat_lower
+        or "wifi" in cat_lower
+        or "internet" in cat_lower
+        or "sewa" in cat_lower
+        or "rent" in cat_lower
+        or "pln" in cat_lower
+    ):
         return "utilities"
-    if cat == OPEX_SUBCATEGORIES["operational"] or cat.startswith("Beban Operasional") or cat.startswith("Supplies"):
-        return "operational"
-    if cat == OPEX_SUBCATEGORIES["maintenance"] or cat.startswith("Beban Pemeliharaan") or cat.startswith("Servis"):
+
+    if (
+        cat == OPEX_SUBCATEGORIES["maintenance"]
+        or cat.startswith("Beban Pemeliharaan")
+        or "pemeliharaan" in cat_lower
+        or "maintenance" in cat_lower
+        or "servis" in cat_lower
+        or "service" in cat_lower
+        or "perbaikan" in cat_lower
+        or "repair" in cat_lower
+        or "reparasi" in cat_lower
+    ):
         return "maintenance"
+
+    if (
+        cat == OPEX_SUBCATEGORIES["operational"]
+        or cat.startswith("Beban Operasional")
+        or "operasional" in cat_lower
+        or "operational" in cat_lower
+        or "supplies" in cat_lower
+        or "suplies" in cat_lower
+        or "store" in cat_lower
+        or "atk" in cat_lower
+        or "perlengkapan" in cat_lower
+    ):
+        return "operational"
+
     if cat == "OPEX":
         return "general_opex"
 
