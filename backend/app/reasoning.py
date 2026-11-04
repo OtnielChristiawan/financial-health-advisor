@@ -370,8 +370,10 @@ def diagnose_finance(report: dict[str, Any]) -> dict[str, Any]:
     owner_draw = sum(float(r["amount"]) for r in rows if r.get("kind") == "draw")
     prev_owner_draw = sum(float(r["amount"]) for r in prev_rows if r.get("kind") == "draw")
 
-    cash_runway = float(report.get("cashRunwayMonths") or 99.0)
-    runway_min = float(report.get("runwayMinimumMonths") or 2.0)
+    raw_runway = report.get("cashRunwayMonths")
+    cash_runway = float(raw_runway) if raw_runway is not None else 99.0
+    raw_min = report.get("runwayMinimumMonths")
+    runway_min = float(raw_min) if raw_min is not None else 2.0
 
     numbers: dict[str, float] = {
         "hasRevenueGrowth": rev_growth,
@@ -465,9 +467,11 @@ def diagnose_finance(report: dict[str, Any]) -> dict[str, Any]:
                     ["Perubahan kas bersih", _format_money(change_cash)],
                 ]
             elif fid == "LiquidityCritical":
+                runway_days = int(round(cash_runway * 30))
+                min_days = int(round(runway_min * 30))
                 evidence = [
-                    ["Estimasi cadangan kas (runway)", f"{cash_runway:.1f} bulan"],
-                    ["Batas aman minimum (policy)", f"{runway_min:.1f} bulan"],
+                    ["Estimasi cadangan kas (runway)", f"{runway_days} hari ({cash_runway:.1f} bulan)"],
+                    ["Batas aman minimum (policy)", f"{min_days} hari ({runway_min:.1f} bulan)"],
                     ["Perubahan kas periode ini", _format_money(change_cash)],
                     ["Saldo kas akhir", _format_money(report.get("cashClosing", 0))],
                 ]
@@ -514,7 +518,7 @@ def diagnose_finance(report: dict[str, Any]) -> dict[str, Any]:
             elif fid == "OPEXPressure":
                 why_not.append("OPEXPressure tidak disimpulkan karena beban operasional tumbuh terkendali di bawah omzet.")
             elif fid == "LiquidityCritical":
-                why_not.append(f"LiquidityCritical tidak disimpulkan karena cadangan kas ({cash_runway:.1f} bulan) masih berada di atas batas minimum {runway_min:.1f} bulan.")
+                why_not.append(f"LiquidityCritical tidak disimpulkan karena cadangan kas ({int(round(cash_runway * 30))} hari / {cash_runway:.1f} bulan) masih berada di atas batas minimum {int(round(runway_min * 30))} hari ({runway_min:.1f} bulan).")
             elif fid == "OwnerDrawLiquidityPressure":
                 why_not.append("OwnerDrawPressure tidak disimpulkan karena penarikan prive pemilik masih tertutup oleh arus kas operasional.")
 
@@ -534,7 +538,7 @@ def diagnose_finance(report: dict[str, Any]) -> dict[str, Any]:
         "why_not": why_not[:4],
         "cost_drivers": reasoner_res.get("cost_drivers", []),
         "recommendations": reasoner_res.get("recommendations", []),
-        "inferred_classes": inferred_set,
+        "inferred_classes": sorted(list(inferred_set)),
         "engine": "OWL + SWRL / Pellet",
         "elapsed_ms": reasoner_res.get("elapsed_ms", 0),
     }

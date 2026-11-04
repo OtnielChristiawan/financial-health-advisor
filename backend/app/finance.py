@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import calendar
+import re
 from datetime import date
 from typing import Any, Literal
 
@@ -87,6 +88,17 @@ class MonthlyClosing(BaseModel):
     purchases: StrictInt = Field(default=0, ge=0)
     ending_inventory: StrictInt = Field(default=0, ge=0, alias="endingInventory")
     raw_material_consumption: StrictInt = Field(default=0, ge=0, alias="rawMaterialConsumption")
+
+    # Cash & Bank physical reconciliation
+    actual_cash: StrictInt | None = Field(default=None, ge=0, alias="actualCash")
+    actual_bank: StrictInt | None = Field(default=None, ge=0, alias="actualBank")
+    system_cash: StrictInt = Field(default=0, alias="systemCash")
+    system_bank: StrictInt = Field(default=0, alias="systemBank")
+    cash_difference: StrictInt = Field(default=0, alias="cashDifference")
+    bank_difference: StrictInt = Field(default=0, alias="bankDifference")
+    total_cash_difference: StrictInt = Field(default=0, alias="totalCashDifference")
+    difference_treatment: Literal["opex", "non_operating"] = Field(default="opex", alias="differenceTreatment")
+
     notes: str = Field(default="", max_length=500)
     closed_at: str | None = Field(default=None, alias="closedAt")
     closed_by: str | None = Field(default=None, alias="closedBy")
@@ -195,7 +207,12 @@ def _is_cogs_purchase(tx: FinanceTransaction, custom_map: dict[str, str]) -> boo
         return True
     if tx.category.startswith("COGS") or tx.category.startswith("Pembelian Bahan"):
         return True
-    return custom_map.get(tx.category) == "cogs"
+    if custom_map.get(tx.category) == "cogs":
+        return True
+    cat_lower = tx.category.lower()
+    if any(k in cat_lower for k in ("marketlist", "market list", "bahan baku", "bahan masakan", "bahan makanan", "bahan minuman", "belanja pasar", "raw material", "ingredient")):
+        return True
+    return False
 
 
 def _classify_expense(tx: FinanceTransaction, custom_map: dict[str, str]) -> str:
@@ -251,25 +268,6 @@ def _classify_expense(tx: FinanceTransaction, custom_map: dict[str, str]) -> str
         return "payroll"
 
     if (
-        cat == OPEX_SUBCATEGORIES["utilities"]
-        or cat.startswith("Beban Utilitas")
-        or "utilitas" in cat_lower
-        or "listrik" in cat_lower
-        or "electricity" in cat_lower
-        or "electric" in cat_lower
-        or "power" in cat_lower
-        or "air" in cat_lower
-        or "water" in cat_lower
-        or "pdam" in cat_lower
-        or "wifi" in cat_lower
-        or "internet" in cat_lower
-        or "sewa" in cat_lower
-        or "rent" in cat_lower
-        or "pln" in cat_lower
-    ):
-        return "utilities"
-
-    if (
         cat == OPEX_SUBCATEGORIES["maintenance"]
         or cat.startswith("Beban Pemeliharaan")
         or "pemeliharaan" in cat_lower
@@ -283,13 +281,32 @@ def _classify_expense(tx: FinanceTransaction, custom_map: dict[str, str]) -> str
         return "maintenance"
 
     if (
+        cat == OPEX_SUBCATEGORIES["utilities"]
+        or cat.startswith("Beban Utilitas")
+        or "utilitas" in cat_lower
+        or "listrik" in cat_lower
+        or "electricity" in cat_lower
+        or "electric" in cat_lower
+        or "power" in cat_lower
+        or bool(re.search(r"\bair\b", cat_lower))
+        or "water" in cat_lower
+        or "pdam" in cat_lower
+        or "wifi" in cat_lower
+        or "internet" in cat_lower
+        or "sewa" in cat_lower
+        or "rent" in cat_lower
+        or "pln" in cat_lower
+    ):
+        return "utilities"
+
+    if (
         cat == OPEX_SUBCATEGORIES["operational"]
         or cat.startswith("Beban Operasional")
         or "operasional" in cat_lower
         or "operational" in cat_lower
         or "supplies" in cat_lower
         or "suplies" in cat_lower
-        or "store" in cat_lower
+        or bool(re.search(r"\bstore\b", cat_lower))
         or "atk" in cat_lower
         or "perlengkapan" in cat_lower
     ):
@@ -365,6 +382,19 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
         is_provisional = True
         closing_status = "draft"
 
+    # Physical cash reconciliation differences from closing
+    cash_surplus = 0
+    cash_shortage = 0
+    cash_diff = 0
+    diff_treatment = "opex"
+    if current_closing is not None and current_closing.status == "closed":
+        cash_diff = int(getattr(current_closing, "total_cash_difference", 0) or 0)
+        diff_treatment = getattr(current_closing, "difference_treatment", "opex") or "opex"
+        if cash_diff > 0:
+            cash_surplus = cash_diff
+        elif cash_diff < 0:
+            cash_shortage = abs(cash_diff)
+
     # OPEX Breakdown - guaranteed all non-cogs expenses are accounted for
     payroll = _amount(rows, lambda tx: _classify_expense(tx, custom_map) == "payroll")
     utilities = _amount(rows, lambda tx: _classify_expense(tx, custom_map) == "utilities")
@@ -373,16 +403,27 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
     maintenance = _amount(rows, lambda tx: _classify_expense(tx, custom_map) == "maintenance")
     general_opex = _amount(rows, lambda tx: _classify_expense(tx, custom_map) == "general_opex")
 
+    # If cash shortage is treated as OPEX (Beban Operasional Lainnya)
+    if cash_shortage > 0 and diff_treatment == "opex":
+        general_opex += cash_shortage
+
     opex = payroll + utilities + operational + marketing + maintenance + general_opex
 
     non_operating_income = _amount(
         rows,
         lambda tx: tx.kind == "revenue" and (tx.category == "Pendapatan non-operasional" or custom_map.get(tx.category) in ("non_operating_income", "non_ops"))
     )
+    # If cash surplus (Selisih Lebih Fisik > Sistem), recognized as Non-Operating Income
+    if cash_surplus > 0:
+        non_operating_income += cash_surplus
+
     non_operating_expense = _amount(
         rows,
         lambda tx: _classify_expense(tx, custom_map) == "non_operating_expense"
     )
+    # If cash shortage is treated as Non-Operating Expense
+    if cash_shortage > 0 and diff_treatment == "non_operating":
+        non_operating_expense += cash_shortage
 
     depreciation = _monthly_depreciation(workspace.assets, month)
     gross_profit = revenue - cogs
@@ -408,6 +449,10 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
         "marketing": marketing,
         "nonOperatingIncome": non_operating_income,
         "nonOperatingExpense": non_operating_expense,
+        "cashSurplus": cash_surplus,
+        "cashShortage": cash_shortage,
+        "cashDifference": cash_diff,
+        "differenceTreatment": diff_treatment,
         "depreciation": depreciation,
         "grossProfit": gross_profit,
         "operatingProfit": operating_profit,
@@ -421,6 +466,7 @@ def _report_base(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
 
 
 def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str, Any]:
+    current_closing = {c.period: c for c in workspace.closings}.get(month)
     current = _report_base(workspace, month)
     rows = [transaction for transaction in workspace.transactions if transaction.date.strftime("%Y-%m") == month]
     sum_rows = lambda predicate: _amount(rows, predicate)
@@ -460,12 +506,27 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
         if workspace.opening.date <= transaction.date <= end_date
     ]
 
-    cash = workspace.opening.cash + sum(_account_delta(transaction, "cash") for transaction in all_through)
-    bank = workspace.opening.bank + sum(_account_delta(transaction, "bank") for transaction in all_through)
-    bought_assets = _amount(all_through, lambda tx: tx.kind == "asset")
-
     opening_month_num = _month_number(workspace.opening.date.strftime("%Y-%m"))
     report_month_num = _month_number(month)
+
+    system_cash = workspace.opening.cash + sum(_account_delta(transaction, "cash") for transaction in all_through)
+    system_bank = workspace.opening.bank + sum(_account_delta(transaction, "bank") for transaction in all_through)
+
+    # Reconciled physical differences from all closed months up through report month
+    cum_cash_diff = sum(
+        int(getattr(c, "cash_difference", 0) or 0)
+        for c in workspace.closings
+        if c.status == "closed" and _month_number(c.period) <= report_month_num
+    )
+    cum_bank_diff = sum(
+        int(getattr(c, "bank_difference", 0) or 0)
+        for c in workspace.closings
+        if c.status == "closed" and _month_number(c.period) <= report_month_num
+    )
+
+    cash = system_cash + cum_cash_diff
+    bank = system_bank + cum_bank_diff
+    bought_assets = _amount(all_through, lambda tx: tx.kind == "asset")
 
     # Accumulated depreciation from opening date through current month
     accumulated_depreciation = 0
@@ -521,10 +582,29 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
     ]
     previous = _report_base(workspace, previous_month) if previous_rows else None
 
-    # Cash runway calculation
-    monthly_outflow = ingredient_purchases + opex + non_operating_expense + _amount(rows, lambda tx: tx.kind == "principal")
-    cash_runway_months = round((cash + bank) / max(1, monthly_outflow), 2) if monthly_outflow > 0 else 99.0
+    # BDI (Basic Defense Interval) / Cash Runway calculation:
+    # Mengukur berapa lama posisi kas dapat bertahan menutup OpEx jika omzet drop ke nol.
+    # Cash Runway (Bulan) = (Kas Tunai & Bank Tersedia) / Rata-rata OpEx Per Bulan
+    # Cash Runway (Hari) = Cash Runway (Bulan) * 30 Hari
+    past_opex = []
+    for offset in range(5, -1, -1):
+        m_check = _month_string(report_month_num - offset)
+        m_base = _report_base(workspace, m_check)
+        if m_base["opex"] > 0:
+            past_opex.append(m_base["opex"])
+
+    avg_monthly_opex = (sum(past_opex) / len(past_opex)) if past_opex else opex
+
+    total_cash_available = max(0, cash + bank)
+    if avg_monthly_opex > 0:
+        cash_runway_months = round(total_cash_available / avg_monthly_opex, 2)
+        cash_runway_days = int(round(cash_runway_months * 30))
+    else:
+        cash_runway_months = 99.0
+        cash_runway_days = 999
+
     runway_minimum_months = 2.0
+    runway_minimum_days = 60
 
     report = {
         "month": month,
@@ -547,8 +627,16 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
         "investingCashFlow": investing_cash_flow,
         "financingCashFlow": financing_cash_flow,
         "changeCash": change_cash,
+        "systemCash": system_cash,
+        "systemBank": system_bank,
         "cash": cash,
         "bank": bank,
+        "actualCash": current_closing.actual_cash if (current_closing and current_closing.status == "closed") else None,
+        "actualBank": current_closing.actual_bank if (current_closing and current_closing.status == "closed") else None,
+        "cashDifference": current.get("cashDifference", 0),
+        "cashSurplus": current.get("cashSurplus", 0),
+        "cashShortage": current.get("cashShortage", 0),
+        "differenceTreatment": current.get("differenceTreatment", "opex"),
         "inventory": inventory_asset,
         "fixedAssets": fixed_assets,
         "accumulatedDepreciation": accumulated_depreciation,
@@ -569,7 +657,10 @@ def build_financial_report(workspace: FinanceWorkspace, month: str) -> dict[str,
         "isClosed": current["isClosed"],
         "closingStatus": current["closingStatus"],
         "cashRunwayMonths": cash_runway_months,
+        "cashRunwayDays": cash_runway_days,
+        "averageMonthlyOpex": avg_monthly_opex,
         "runwayMinimumMonths": runway_minimum_months,
+        "runwayMinimumDays": runway_minimum_days,
     }
 
     trend = []

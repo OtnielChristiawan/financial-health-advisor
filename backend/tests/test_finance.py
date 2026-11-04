@@ -325,6 +325,80 @@ class FinancialReportTests(unittest.TestCase):
         self.assertIn("LiquidityCritical", finding_ids)
 
 
+    def test_cash_reconciliation_surplus_and_shortage(self) -> None:
+        """Verifies physical cash reconciliation in Tutup Buku: surplus goes to non-operating income,
+        shortage goes to OPEX, and balance sheet equation holds strictly."""
+        # Surplus scenario (+500k)
+        ws_surplus = {
+            "opening": {"date": "2026-07-31", "cash": 5_000_000, "bank": 0, "inventory": 0, "fixedAssets": 0, "liabilities": 0, "equity": 5_000_000, "confirmed": True},
+            "transactions": [
+                {"id": "t1", "date": "2026-08-05", "description": "Jual", "kind": "revenue", "category": "Penjualan", "amount": 20_000_000, "account": "cash"},
+                {"id": "t2", "date": "2026-08-10", "description": "Bahan", "kind": "expense", "category": "Pembelian Bahan Baku", "amount": 8_000_000, "account": "cash"},
+                {"id": "t3", "date": "2026-08-15", "description": "Gaji", "kind": "expense", "category": "Beban Pegawai (HR/Payroll)", "amount": 5_000_000, "account": "cash"},
+            ],
+            "assets": [],
+            "closings": [
+                {
+                    "period": "2026-08",
+                    "status": "closed",
+                    "stockOpnameDate": "2026-08-31",
+                    "openingInventory": 0,
+                    "purchases": 8_000_000,
+                    "endingInventory": 2_000_000,
+                    "rawMaterialConsumption": 6_000_000,
+                    "actualCash": 12_500_000,
+                    "actualBank": 0,
+                    "systemCash": 12_000_000,
+                    "systemBank": 0,
+                    "cashDifference": 500_000,
+                    "bankDifference": 0,
+                    "totalCashDifference": 500_000,
+                    "differenceTreatment": "opex",
+                }
+            ],
+        }
+        rep_surplus = build_financial_report(FinanceWorkspace.model_validate(ws_surplus), "2026-08")["report"]
+        self.assertEqual(rep_surplus["cashClosing"], 12_500_000)
+        self.assertEqual(rep_surplus["cashSurplus"], 500_000)
+        self.assertEqual(rep_surplus["nonOperatingIncome"], 500_000)
+        self.assertEqual(rep_surplus["balanceDifference"], 0)
+
+        # Shortage scenario (-200k)
+        ws_shortage = {
+            "opening": {"date": "2026-07-31", "cash": 5_000_000, "bank": 0, "inventory": 0, "fixedAssets": 0, "liabilities": 0, "equity": 5_000_000, "confirmed": True},
+            "transactions": [
+                {"id": "t1", "date": "2026-08-05", "description": "Jual", "kind": "revenue", "category": "Penjualan", "amount": 20_000_000, "account": "cash"},
+                {"id": "t2", "date": "2026-08-10", "description": "Bahan", "kind": "expense", "category": "Pembelian Bahan Baku", "amount": 8_000_000, "account": "cash"},
+                {"id": "t3", "date": "2026-08-15", "description": "Gaji", "kind": "expense", "category": "Beban Pegawai (HR/Payroll)", "amount": 5_000_000, "account": "cash"},
+            ],
+            "assets": [],
+            "closings": [
+                {
+                    "period": "2026-08",
+                    "status": "closed",
+                    "stockOpnameDate": "2026-08-31",
+                    "openingInventory": 0,
+                    "purchases": 8_000_000,
+                    "endingInventory": 2_000_000,
+                    "rawMaterialConsumption": 6_000_000,
+                    "actualCash": 11_800_000,
+                    "actualBank": 0,
+                    "systemCash": 12_000_000,
+                    "systemBank": 0,
+                    "cashDifference": -200_000,
+                    "bankDifference": 0,
+                    "totalCashDifference": -200_000,
+                    "differenceTreatment": "opex",
+                }
+            ],
+        }
+        rep_shortage = build_financial_report(FinanceWorkspace.model_validate(ws_shortage), "2026-08")["report"]
+        self.assertEqual(rep_shortage["cashClosing"], 11_800_000)
+        self.assertEqual(rep_shortage["cashShortage"], 200_000)
+        self.assertEqual(rep_shortage["balanceDifference"], 0)
+        self.assertEqual(rep_shortage["opex"], 5_200_000)
+
+
 if __name__ == "__main__":
     unittest.main()
 

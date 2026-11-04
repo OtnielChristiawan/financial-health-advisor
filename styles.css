@@ -21,7 +21,30 @@
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-synthesis: none;
 }
-* { box-sizing: border-box; }
+* { 
+  box-sizing: border-box; 
+  scrollbar-width: thin;
+  scrollbar-color: #cbd8ce transparent;
+}
+
+/* Custom Sleek Scrollbar (Cross-Browser Webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd8ce;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ab4a0;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
 body {
   margin: 0;
   min-width: 320px;

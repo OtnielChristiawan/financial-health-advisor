@@ -1,3 +1,26 @@
+/* Global Smooth Scrollbars (Cross-Browser) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd8ce transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd8ce;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ab4a0;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 #root { min-height: 100vh; }
 .app-loading { min-height: 100vh; display:grid; place-items:center; color:#77847a; font-size:13px; }
 .prototype-auth {
@@ -321,3 +344,271 @@ select.input-control option:checked {
   font-weight: 600;
 }
 
+
+/* Cash subsplit in KPI Card */
+.stat-subsplit {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 8px;
+  padding: 4px 8px;
+  background: #f4f7f3;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.cash-subsplit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #556257;
+}
+.cash-subsplit-pill strong {
+  color: #1a2a1f;
+  font-weight: 700;
+}
+.cash-subsplit-sep {
+  color: #bdc7be;
+}
+
+/* Donut / Pie Chart Component */
+.donut-container-responsive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-top: 14px;
+}
+@media (max-width: 900px) {
+  .donut-container-responsive {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.donut-chart-wrapper {
+  position: relative;
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.donut-svg {
+  width: 220px;
+  height: 220px;
+  overflow: visible;
+  display: block;
+}
+.donut-legend-clean {
+  flex: 1 1 280px;
+  max-width: 340px;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+}
+@media (max-width: 900px) {
+  .donut-legend-clean {
+    flex: 1;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 16px;
+  }
+}
+.donut-legend-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: #fbfdfa;
+  border: 1px solid #e7eee5;
+  border-radius: 9px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.donut-legend-pill:hover,
+.donut-legend-pill.active {
+  background: #ffffff;
+  transform: translateX(2px);
+  border-color: #2e7654;
+  box-shadow: 0 2px 8px rgba(46, 118, 84, 0.1);
+}
+.donut-legend-pill-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  overflow: hidden;
+}
+.donut-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.donut-legend-title {
+  color: #26382c;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.donut-legend-pill-right {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+.donut-legend-pill-right strong {
+  color: #16291b;
+  font-weight: 700;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.donut-legend-percent {
+  color: #6c7d6e;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Dashboard Lower Grid Optimization for Donut Chart */
+.lower-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) !important;
+  gap: 18px !important;
+  margin-top: 18px !important;
+}
+@media (max-width: 992px) {
+  .lower-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* ========================================================
+   Custom Month Picker Component (Matches RuangUsaha Palette)
+   ======================================================== */
+.custom-month-picker {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+}
+.month-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 14px 8px 16px;
+  background: #ffffff;
+  border: 1.5px solid #dce4da;
+  border-radius: 10px;
+  color: #1f3325;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.month-picker-trigger:hover {
+  border-color: #256f4d;
+  background-color: #fcfdfc;
+  box-shadow: 0 2px 8px rgba(37, 111, 77, 0.12);
+}
+.month-picker-trigger:focus-visible {
+  outline: none;
+  border-color: #256f4d;
+  box-shadow: 0 0 0 3px rgba(37, 111, 77, 0.2);
+}
+.month-picker-chevron {
+  display: flex;
+  align-items: center;
+  color: #607366;
+  transition: transform 0.2s ease;
+}
+.month-picker-chevron.open {
+  transform: rotate(180deg);
+}
+
+.month-picker-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 185px;
+  background: #ffffff;
+  border: 1.5px solid #dce5db;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(27, 48, 35, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  z-index: 100;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.month-picker-dropdown-header {
+  padding: 8px 12px 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #8c9c8f;
+  border-bottom: 1px solid #edf2ed;
+}
+.month-picker-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 4px;
+}
+/* Sleek custom scrollbar for dropdown */
+.month-picker-list::-webkit-scrollbar {
+  width: 5px;
+}
+.month-picker-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.month-picker-list::-webkit-scrollbar-thumb {
+  background: #cbd8ce;
+  border-radius: 4px;
+}
+.month-picker-list::-webkit-scrollbar-thumb:hover {
+  background: #9ab4a0;
+}
+
+.month-picker-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2b3a2f;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.month-picker-option:hover {
+  background: #f2f7f2;
+  color: #1e5a3c;
+}
+.month-picker-option.selected {
+  background: #eaf5ed;
+  color: #1b5339;
+  font-weight: 700;
+}

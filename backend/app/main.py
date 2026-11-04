@@ -1,65 +1,28 @@
 from __future__ import annotations
 
 import os
-import re
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from .finance import FinanceWorkspace, build_financial_report
-from .reasoning import JAVA_VERSION, analyze, diagnose_finance
-
-
-class Movement(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    name: str = Field(min_length=1, max_length=80)
-    growth: float
-    is_top: bool
-
-    @field_validator("growth")
-    @classmethod
-    def growth_must_be_finite(cls, value: float) -> float:
-        if not (-1e12 < value < 1e12):
-            raise ValueError("Pertumbuhan kategori harus berupa angka finite.")
-        return value
-
-
-class AnalyzeRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    numbers: dict[str, float] = Field(default_factory=dict)
-    movements: list[Movement] = Field(default_factory=list, max_length=30)
-
-    @field_validator("numbers")
-    @classmethod
-    def indicators_must_be_finite(cls, values: dict[str, float]) -> dict[str, float]:
-        for key, value in values.items():
-            if not (-1e15 < value < 1e15):
-                raise ValueError(f"Nilai {key} harus finite dan dalam rentang yang didukung.")
-        return values
-
-
-class FinancialReportRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    month: str
-    workspace: FinanceWorkspace
-
-    @field_validator("month")
-    @classmethod
-    def month_must_be_valid(cls, value: str) -> str:
-        if not re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", value):
-            raise ValueError("Periode harus menggunakan format YYYY-MM.")
-        return value
-
+from .reasoning import JAVA_VERSION
+from .routers import closing_router, dashboard_router, kbr_router, reports_router
+from .schemas import AnalyzeRequest, FinancialReportRequest, Movement
 
 app = FastAPI(
-    title="RuangUsaha API",
-    version="1.0.0",
-    description="API untuk analisis finansial UMKM berbasis OWL/SWRL dan Pellet.",
+    title="RuangUsaha Modular API",
+    version="2.0.0",
+    description=(
+        "API Modular untuk Sistem Manajemen Finansial & Penalaran Kesehatan UMKM "
+        "berbasis SAK EMKM dan Ontologi OWL 2 DL / SWRL (Pellet Reasoner)."
+    ),
+    openapi_tags=[
+        {"name": "Dashboard", "description": "Ringkasan metrik KPI, tren penjualan, dan alokasi biaya super cepat (<20ms)."},
+        {"name": "Financial Reports", "description": "Laporan Keuangan SAK EMKM: Laba Rugi, Posisi Keuangan (Neraca), dan Arus Kas."},
+        {"name": "Closing & Reconciliation", "description": "Tutup Buku bulanan, persediaan fisik, dan rekonsiliasi kas/bank fisik."},
+        {"name": "Knowledge-Based Reasoning (OWL/Pellet)", "description": "Diagnosa sistem pakar berbasis ontologi OWL 2 DL dan aturan SWRL via Pellet Reasoner."},
+    ],
 )
 
 allowed_origins = [
@@ -67,7 +30,6 @@ allowed_origins = [
     for origin in os.environ.get("FRONTEND_ORIGINS", "").split(",")
     if origin.strip()
 ]
-# If FRONTEND_ORIGINS is empty or contains wildcard, allow all for easy dev/ngrok demo
 if not allowed_origins:
     allowed_origins = ["*"]
 
@@ -79,36 +41,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register Domain Routers
+app.include_router(dashboard_router)
+app.include_router(reports_router)
+app.include_router(closing_router)
+app.include_router(kbr_router)
+
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
-    return {"ok": True, "engine": "OWL + SWRL / Pellet", "java": JAVA_VERSION}
+    """Healthcheck & metadata router."""
+    return {
+        "ok": True,
+        "engine": "OWL + SWRL / Pellet",
+        "java": JAVA_VERSION,
+        "architecture": "Modular Domain Routers (Dashboard, Reports, Closing, KBR)",
+        "endpoints": [
+            "/api/dashboard",
+            "/api/reports",
+            "/api/reports/income-statement",
+            "/api/reports/balance-sheet",
+            "/api/reports/cash-flow",
+            "/api/closing/reconciliation",
+            "/api/kbr/diagnose",
+            "/api/kbr/status",
+        ],
+    }
 
 
-@app.post("/api/reports")
-def financial_report(request: FinancialReportRequest) -> dict[str, Any]:
-    try:
-        report_data = build_financial_report(request.workspace, request.month)
-        diagnosis = diagnose_finance(report_data["report"])
-        report_data["diagnosis"] = diagnosis
-        return report_data
-    except ValueError as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
+# Backward-compatible aliases for existing client code / tests
+@app.post("/api/diagnose", include_in_schema=False)
+def diagnose_alias(request: FinancialReportRequest) -> dict[str, Any]:
+    from .routers.kbr import run_kbr_diagnosis
+    return run_kbr_diagnosis(request)
 
 
-@app.post("/api/diagnose")
-def diagnose_financial_report(request: FinancialReportRequest) -> dict[str, Any]:
-    try:
-        report_data = build_financial_report(request.workspace, request.month)
-        return diagnose_finance(report_data["report"])
-    except ValueError as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
-
-
-@app.post("/api/analyze")
-def analyze_financial_state(request: AnalyzeRequest) -> dict[str, Any]:
-    try:
-        return analyze(request.model_dump())
-    except ValueError as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
-
+@app.post("/api/analyze", include_in_schema=False)
+def analyze_alias(request: AnalyzeRequest) -> dict[str, Any]:
+    from .routers.kbr import run_generic_analysis
+    return run_generic_analysis(request)
